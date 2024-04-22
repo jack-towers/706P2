@@ -1,7 +1,19 @@
 #include <Servo.h>  //Need for Servo pulse output
 #include <SoftwareSerial.h>
 
+Servo turret_motor;
 
+//Default ultrasonic ranging sensor pins, these pins are defined my the Shield
+const int TRIG_PIN = 4;
+const int ECHO_PIN = 5;
+
+const int FAN_PIN = 42;
+
+int sensorPin = A4;
+int sensorValue = 0;
+float gyroRate = 0;
+// supply voltage for gyro
+float gyroZeroVoltage = 0;
 
 //Serial Pointer
 HardwareSerial *SerialCom;
@@ -33,6 +45,9 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   BluetoothSerial.begin(115200);
+
+  pinMode(sensorPin, OUTPUT);
+
 
   // The Trigger pin will tell the sensor to range find
   pinMode(TRIG_PIN, OUTPUT);
@@ -66,5 +81,5 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-sonarRead();
+fanRun();
 }

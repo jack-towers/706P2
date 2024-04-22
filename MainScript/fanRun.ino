@@ -1,7 +1,5 @@
-const int FAN_PIN = 42;
-
-fanRun() {
+void fanRun() {
   digitalWrite(FAN_PIN, HIGH);
-  delayMicroseconds(5000);
+  delay(5000);
   digitalWrite(FAN_PIN, LOW);
 }
