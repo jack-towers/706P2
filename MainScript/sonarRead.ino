@@ -1,4 +1,13 @@
 
+
+//Default ultrasonic ranging sensor pins, these pins are defined my the Shield
+const int TRIG_PIN = 4;
+const int ECHO_PIN = 5;
+
+// Anything over 400 cm (23200 us pulse) is "out of range". Hit:If you decrease to this the ranging sensor but the timeout is short, you may not need to read up to 4meters.
+const unsigned int MAX_DIST = 23200;
+
+
 #ifndef NO_HC - SR04
 float sonarRead() {
   unsigned long t1;

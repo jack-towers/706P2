@@ -1,3 +1,23 @@
+float gyroSupplyVoltage = 5;
+
+// supply voltage for gyro
+float gyroZeroVoltage = 0;
+
+// the value of voltage when gyro is zero
+float gyroSensitivity = 0.007;
+float rotationThreshold = 1.5;
+float gyroRate = 0;
+float currentAngle = 0;
+
+byte serialRead = 0;
+
+int sensorPin = A4;
+int T = 100;
+int sensorValue = 0;
+unsigned long T1 = 0;
+unsigned long T2 = 0;
+
+
 //Function to read angle off gyro sensor
 float gyroRead() {
   T1 = millis();
