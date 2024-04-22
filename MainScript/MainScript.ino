@@ -46,8 +46,7 @@ void setup() {
 
   BluetoothSerial.begin(115200);
 
-  pinMode(sensorPin, OUTPUT);
-
+  pinMode(FAN_PIN, OUTPUT);
 
   // The Trigger pin will tell the sensor to range find
   pinMode(TRIG_PIN, OUTPUT);
