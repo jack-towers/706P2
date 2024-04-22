@@ -1,5 +1,3 @@
-float gyroSupplyVoltage = 5;
-
 // supply voltage for gyro
 float gyroZeroVoltage = 0;
 
