@@ -1,0 +1,6 @@
+To do list:
+1. CAD model mounts for robot
+2. Kalman Filters for IR sensors
+3. Finite State Machine
+4. Obstacle Avoidance System
+5. 
