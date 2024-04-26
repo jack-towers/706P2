@@ -3,4 +3,4 @@ To do list:
 2. Kalman Filters for IR sensors
 3. Finite State Machine
 4. Obstacle Avoidance System
-5. 
+5. Wire the fan: Done
