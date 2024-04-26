@@ -40,22 +40,48 @@ float Y = 0;
 float PHI = 0;
 
 
+// three machine states 
+enum STATE {
+  INITIALISING,
+  RUNNING, 
+  STOPPED
+};
+
+// define motions states
+enum MOTION{
+FORWARD,
+BACKWARD,
+LEFT_TURN,
+RIGHT_TURN,
+LEFT_ARC,
+RIGHT_ARC,
+BACKWARD_LEFT_TURN,
+};
+
+// declare function output and function flag
+MOTION cruise_command;
+int cruise_output_flag;
+MOTION follow_command;
+int follow_output_flag;
+MOTION avoid_command;
+int avoid_output_flag;
+MOTION escape_command;
+int escape_output_flag;
+MOTION motor_input;
+
+
 void setup() {
   turret_motor.attach(11);
   pinMode(LED_BUILTIN, OUTPUT);
-
-  BluetoothSerial.begin(115200);
-
   pinMode(FAN_PIN, OUTPUT);
-
-  // The Trigger pin will tell the sensor to range find
   pinMode(TRIG_PIN, OUTPUT);
   digitalWrite(TRIG_PIN, LOW);
-
+  BluetoothSerial.begin(115200);
+  
   // Setup the Serial port and pointer, the pointer allows switching the debug info through the USB port(Serial) or Bluetooth port(Serial1) with ease.
   SerialCom = &Serial1;
   SerialCom->begin(115200);
-  SerialCom->println("MECHENG706_Base_Code_25/01/2018");
+  SerialCom->println("MECHENG70_WE_ONNNNN");
   delay(1000);
   SerialCom->println("Setup....");
 
@@ -67,18 +93,72 @@ void setup() {
   Serial.println("get the gyro zero voltage");
   for (i = 0; i < 100; i++)  // read 100 values of voltage when gyro is at still, to calculate the zero-drift.
   {
-    sensorValue = analogRead(sensorPin);
-    sum += sensorValue;
-    delay(5);
+  sensorValue = analogRead(sensorPin);
+  sum += sensorValue;
+  delay(5);
   }
   gyroZeroVoltage = sum / 100;  // average the sum as the zero drifting
 
   delay(1000);  //settling time but no really needed
+  /////////
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-fanRun();
+  static STATE machine_state = INITIALISING; // start from the sate
+  INITIALIING
+  switch (machine_state)
+  {
+    case INITIALISING:
+      machine_state = initialising();
+    break;
+    case RUNNING:
+      machine_state = running();
+    break;
+    case STOPPED:
+      machine_state = stopped();
+    break;
+  }
+  fanRun();
 }
+
+STATE initialising(){
+  enable_motors();                                 // enable motors 
+  Serial.println("INITIALISING");        // print the current stage 
+  return RUNNING;                               // return to RUNING STATE DIRECTLY 
+}
+
+STATE running(){
+  //read_serial_command();                      // read command from serial communication
+  speed_change_smooth();                 //function to speed up and slow down smoothly 
+  // this is just for test functions to read simulative                       sensor reading from monitor
+  serial_read_conditions();  
+  // four function 
+  cruise(); 
+  follow(); 
+  avoid(); 
+  escape();
+  // select the output command based on the function priority 
+  arbitrate();
+  photo_left = 0; 
+  photo_right = 0;
+  ir_detect = 0; 
+  bumper_left = 0;
+  bumper_right = 0;
+  bumper_back = 0; 
+  return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
+                   
+}                                                            // STATE REPEATLY 
+
+
+STATE stopped(){
+disable_motors();                           // disable the motors
+}
+
+
+
+
+
+
+
