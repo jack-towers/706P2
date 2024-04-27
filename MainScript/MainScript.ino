@@ -3,6 +3,15 @@
 
 Servo turret_motor;
 
+//  define the sensor reading results 
+int photo_left ;
+int photo_right;
+  int ir_detect;
+  int bumper_left;
+  int bumper_right;
+  int  bumper_back;
+
+
 //Default ultrasonic ranging sensor pins, these pins are defined my the Shield
 const int TRIG_PIN = 4;
 const int ECHO_PIN = 5;
@@ -107,7 +116,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   static STATE machine_state = INITIALISING; // start from the sate
-  INITIALIING
+  INITIALISING;
   switch (machine_state)
   {
     case INITIALISING:
