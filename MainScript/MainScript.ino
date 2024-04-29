@@ -22,7 +22,7 @@ double process_noise = 0;
 Servo turret_motor;
 
 //  define the sensor reading results 
-int photo_left ;
+int photo_left;
 int photo_right;
 int ir_detect;
 int bumper_left;

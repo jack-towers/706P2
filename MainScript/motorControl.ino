@@ -21,12 +21,12 @@ switch(motor_input)
   
   case LEFT_TURN:
   ccw();
- delay(1000);
+  delay(1000);
   break;
  
   case RIGHT_TURN:
   cw();
- delay(1000);
+  delay(1000);
   break;
  
   case LEFT_ARC:
