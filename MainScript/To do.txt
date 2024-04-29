@@ -4,3 +4,4 @@ To do list:
 3. Finite State Machine
 4. Obstacle Avoidance System
 5. Wire the fan: Done
+6.Servo motor: Donezo

@@ -7,9 +7,17 @@ Servo left_rear_motor;   // create servo object to control Vex Motor Controller 
 Servo right_rear_motor;  // create servo object to control Vex Motor Controller 29
 Servo right_front_motor;  // create servo object to control Vex Motor Controller 29
 
+//servoMotor for fan
+const byte fan_servo = 45;
+Servo fan_servo_motor; 
+
 int speed_val = 100;
 int speed_change;
 
+//Kalman Filter declarations
+double last_var = 0;
+double sensor_noise = 0;
+double process_noise = 0;
 
 Servo turret_motor;
 
@@ -93,6 +101,7 @@ MOTION motor_input;
 
 void setup() {
   turret_motor.attach(11);
+  fan_servo_motor.attach(45);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(FAN_PIN, OUTPUT);
   pinMode(TRIG_PIN, OUTPUT);
@@ -126,22 +135,24 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  static STATE machine_state = INITIALISING; // start from the sate
-  INITIALISING;
-  switch (machine_state)
-  {
-    case INITIALISING:
-      machine_state = initialising();
-    break;
-    case RUNNING:
-      machine_state = running();
-    break;
-    case STOPPED:
-      machine_state = stopped();
-    break;
-  }
-  fanRun();
+  // // put your main code here, to run repeatedly:
+  // static STATE machine_state = INITIALISING; // start from the sate
+  // INITIALISING;
+  // switch (machine_state)
+  // {
+  //   case INITIALISING:
+  //     machine_state = initialising();
+  //   break;
+  //   case RUNNING:
+  //     machine_state = running();
+  //   break;
+  //   case STOPPED:
+  //     machine_state = stopped();
+  //   break;
+  // }
+
+  servoMotor();
+  delay(1000);
 }
 
 STATE initialising(){
