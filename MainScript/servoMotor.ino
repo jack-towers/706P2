@@ -1,7 +1,7 @@
 const byte fan_servo = A15;
 
-Servo fan_servo; 
+Servo fan_servo_motor; 
 
 void servoMotor() {
-  fan_servo.writeMicroseconds(900);
+  fan_servo_motor.writeMicroseconds(900);
 }

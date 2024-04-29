@@ -1,16 +1,28 @@
 #include <Servo.h>  //Need for Servo pulse output
 #include <SoftwareSerial.h>
 
+// create servo objects for each motor 
+Servo left_front_motor;   // create servo object to control Vex Motor Controller 29
+Servo left_rear_motor;   // create servo object to control Vex Motor Controller 29
+Servo right_rear_motor;  // create servo object to control Vex Motor Controller 29
+Servo right_front_motor;  // create servo object to control Vex Motor Controller 29
+
+int speed_val = 100;
+int speed_change;
+
+
 Servo turret_motor;
 
 //  define the sensor reading results 
 int photo_left ;
 int photo_right;
-  int ir_detect;
-  int bumper_left;
-  int bumper_right;
-  int  bumper_back;
+int ir_detect;
+int bumper_left;
+int bumper_right;
+int  bumper_back;
 
+// define threshold of phototransistor  difference 
+int photo_dead_zone = 5;
 
 //Default ultrasonic ranging sensor pins, these pins are defined my the Shield
 const int TRIG_PIN = 4;
