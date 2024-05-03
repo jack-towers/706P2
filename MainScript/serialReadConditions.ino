@@ -1,6 +1,5 @@
 // read simulative sensor reading   
-void serial_read_conditions()
-{
+void serial_read_conditions() {
  char in_data[8];
   if(Serial.available()>0)
           {

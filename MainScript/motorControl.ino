@@ -36,7 +36,7 @@ switch(motor_input)
  
   case RIGHT_ARC:
   strafe_right();
-   delay(1000);
+  delay(1000);
   break;
 
   case BACKWARD_LEFT_TURN:

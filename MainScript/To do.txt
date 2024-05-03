@@ -4,4 +4,8 @@ To do list:
 3. Finite State Machine
 4. Obstacle Avoidance System
 5. Wire the fan: Done
-6.Servo motor: Donezo
+6. Servo motor Calibration: Donezo
+7. Make Code for moving the servo and detecting the fire
+8. Make the circuit for phototransistors
+9. Calibrate phototransistors, use 10 or 12 ohms
+10. Adjust Cruise and Follow functions to include twisting the servo and finding the fire

@@ -198,15 +198,13 @@ disable_motors();                           // disable the motors
 }
 
 // cruise function output command and flag
-void cruise()
-{
+void cruise() {
   cruise_command = FORWARD;
   cruise_output_flag=1; 
-  }
+}
 
 // follow function output command and flag
-void follow()
-{ int delta;
+void follow() { int delta;
   //int left_photo, right_photo, delta;
     //left_photo=analog(1);
    // right_photo=analog(0);
@@ -224,8 +222,7 @@ void follow()
 }
 
 // avoid function output command and flag 
-void avoid()
-{int val;
+void avoid() {int val;
      val=ir_detect;
     //val=ir_detect();
     if (val==1)
@@ -244,8 +241,7 @@ void avoid()
 
 
 //escape function output command and flag
-void escape()
-{ 
+void escape() { 
 //bumper_check();
 if (bumper_left && bumper_right)
   {escape_output_flag=1;
@@ -268,8 +264,7 @@ else
 }
 
 // check flag and select command based on priority 
-void arbitrate ()
- {
+void arbitrate () {
   if (cruise_output_flag==1)
   {motor_input=cruise_command;}
   if (follow_output_flag==1)
@@ -279,6 +274,6 @@ void arbitrate ()
   if (escape_output_flag==1)
   {motor_input=escape_command;}
   robotMove();                                    
-  }
+}
 
 
