@@ -1,6 +1,6 @@
 To do list:
 1. CAD model mounts for robot: In progress
-2. Kalman Filters for IR sensors
+2. Kalman Filters for IR sensors: NO
 3. Finite State Machine
 4. Obstacle Avoidance System
 5. Wire the fan: Done
@@ -9,3 +9,4 @@ To do list:
 8. Make the circuit for phototransistors
 9. Calibrate phototransistors, use 10 or 12 ohms
 10. Adjust Cruise and Follow functions to include twisting the servo and finding the fire
+11. Consider using 2 Phototransistors forward and 2 back to cover 360 degrees
