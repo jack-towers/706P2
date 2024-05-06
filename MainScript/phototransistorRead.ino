@@ -30,12 +30,26 @@ float phototransistorHone() {
     sumAverage = sum + sumPast1 + sumPast2 + sumPast3 + sumPast4;
     sumAveragePast = sumPast1 + sumPast2 + sumPast3 + sumPast4 + sumPast5;
 
-    turnServo();
+    if (stop == 0) {
+      honeServo();
+    }
+
+    if (turnDirection = 1) {
+      ccw();
+      delay(1000);
+      stop();
+    } else {
+      cw();
+      delay(1000);
+      stop();
+    }
 
     sumPast1 = sum;
     sumPast2 = sumPast1;
     sumPast3 = sumPast2;
     sumPast4 = sumPast3;
     sumPast5 = sumPast4;
+
+    if ()
   }
 }

@@ -40,9 +40,7 @@ void honeServo() {
 
   fan_servo_motor.writeMicroseconds(ongoingAngle);
 
-  if (ongoingAngle == 2100) {
-    turnDirection = 1;
-  } else if (ongoingAngle == 900) {
-    turnDirection = 0;
-  } 
+  if ((ongoingAngle == 2100) | (ongoingAngle == 900)) {
+    stop = 1;
+  }
 }
