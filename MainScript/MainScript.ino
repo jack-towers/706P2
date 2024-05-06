@@ -25,6 +25,10 @@ float ptMidLeftDist;
 float ptMidRightDist;
 float ptRightDist;
 
+int ongoingAngle = 1500;
+int angleIncrement = 40; //6.666667 is 1 degree
+int turnDirection = 0;
+
 Servo turret_motor;
 
 //  define the sensor reading results 
@@ -33,7 +37,7 @@ int photo_right;
 int ir_detect;
 int bumper_left;
 int bumper_right;
-int  bumper_back;
+int bumper_back;
 
 // define threshold of phototransistor  difference 
 int photo_dead_zone = 5;
@@ -138,6 +142,8 @@ void setup() {
   delay(1000);  //settling time but no really needed
   /////////
 
+  fan_servo_motor.writeMicroseconds(1500);
+
 }
 
 void loop() {
@@ -207,6 +213,11 @@ disable_motors();                           // disable the motors
 void cruise() {
   cruise_command = FORWARD;
   cruise_output_flag=1; 
+  turnServo;
+  phototransistorRead();
+  if ((ptLeftDist > 0) | (ptMidLeftDist > 0) | (ptMidRightDist > 0) | (ptRightDist > 0)) {
+
+  }
 }
 
 // follow function output command and flag
