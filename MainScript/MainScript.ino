@@ -14,10 +14,16 @@ Servo fan_servo_motor;
 int speed_val = 100;
 int speed_change;
 
-//Kalman Filter declarations
-double last_var = 0;
-double sensor_noise = 0;
-double process_noise = 0;
+//Phototransistor initialisations
+int ptLeft = A12;
+int ptMidLeft = A13;
+int ptMidRight = A14;
+int ptRight = A15;
+
+float ptLeftDist;
+float ptMidLeftDist;
+float ptMidRightDist;
+float ptRightDist;
 
 Servo turret_motor;
 

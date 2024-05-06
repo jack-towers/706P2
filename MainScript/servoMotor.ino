@@ -11,3 +11,7 @@ void servoMotor() {
   delay(1000);
   fan_servo_motor.writeMicroseconds(1500);
 }
+
+void turnServo () {
+
+}
