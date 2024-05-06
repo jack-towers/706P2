@@ -7,6 +7,6 @@ To do list:
 6. Servo motor Calibration: Donezo
 7. Make Code for moving the servo and detecting the fire
 8. Make the circuit for phototransistors: Done
-9. Calibrate phototransistors, use 10 or 12 ohms
+9. Calibrate phototransistors, use 10k or 12k ohms, currently using 12k ohms
 10. Adjust Cruise and Follow functions to include twisting the servo and finding the fire
 11. Consider using 2 Phototransistors forward and 2 back to cover 360 degrees
