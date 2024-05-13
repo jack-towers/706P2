@@ -26,9 +26,6 @@ float phototransistorHone() {
   sumAveragePast = sumPast1 + sumPast2 + sumPast3 + sumPast4 + sumPast5;
 
   while (sumAverage > sumAveragePast) {
-    sum = (ptMidLeftDist + ptMidRightDist) / 2;
-    sumAverage = sum + sumPast1 + sumPast2 + sumPast3 + sumPast4;
-    sumAveragePast = sumPast1 + sumPast2 + sumPast3 + sumPast4 + sumPast5;
 
     if (stop == 0) {
       honeServo();
@@ -36,11 +33,11 @@ float phototransistorHone() {
 
     if (turnDirection = 1) {
       ccw();
-      delay(1000);
+      delay(500);
       stop();
     } else {
       cw();
-      delay(1000);
+      delay(500);
       stop();
     }
 
@@ -48,8 +45,9 @@ float phototransistorHone() {
     sumPast2 = sumPast1;
     sumPast3 = sumPast2;
     sumPast4 = sumPast3;
-    sumPast5 = sumPast4;
-
-    if ()
+    sumPast5 = sumPast4;    
+    sum = (ptMidLeftDist + ptMidRightDist) / 2;
+    sumAverage = sum + sumPast1 + sumPast2 + sumPast3 + sumPast4;
+    sumAveragePast = sumPast1 + sumPast2 + sumPast3 + sumPast4 + sumPast5;
   }
 }
