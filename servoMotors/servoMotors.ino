@@ -12,10 +12,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  fan_servo_motor.writeMicroseconds(2100);
+  fan_servo_motor.writeMicroseconds(1500);
   delay(1000);
-  fan_servo_motor.writeMicroseconds(900);
-  delay(1000);
+  // fan_servo_motor.writeMicroseconds(900);
+  // delay(1000);
 }
 
 void servoMotor() {

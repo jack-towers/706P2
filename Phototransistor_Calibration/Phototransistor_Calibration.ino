@@ -1,3 +1,12 @@
+#include <SoftwareSerial.h>
+
+// Serial Data input pin
+#define BLUETOOTH_RX 10
+// Serial Data output pin
+#define BLUETOOTH_TX 11
+
+SoftwareSerial BluetoothSerial(BLUETOOTH_RX, BLUETOOTH_TX);
+
 //Front Right
 //ir_B_LONG
 int OrangeRed = A12;
@@ -7,17 +16,18 @@ int Blue = A15;
 
 void setup() {
 // put your setup code here, to run once:
-Serial.begin(9600); // start serial communication
+  BluetoothSerial.begin(115200);
+  Serial.begin(9600); // start serial communication
 }
 
 void loop() {
-  Serial.print((analogRead(OrangeRed)));
-  Serial.print(" , ");
-  Serial.print((analogRead(Black)));
-  Serial.print(" , ");
-  Serial.print((analogRead(GreenYellow)));
-  Serial.print(" , ");
-  Serial.println((analogRead(Blue)));
+  BluetoothSerial.print((analogRead(OrangeRed)));
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print((analogRead(Black)));
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print((analogRead(GreenYellow)));
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.println((analogRead(Blue)));
 
   delay(500);
 }
