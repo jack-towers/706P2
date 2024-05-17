@@ -1,0 +1,11 @@
+red/orange/right
+920540x^-2.274
+
+black/midright
+652326x^-2.261
+
+green/yellow/midleft
+599022x^-2.22
+
+blue/left
+587844x^-2.219
