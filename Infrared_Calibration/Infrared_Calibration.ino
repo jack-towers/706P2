@@ -38,23 +38,24 @@ void setup() {
 
 void loop() {
 // put your main code here, to run repeatedly:
-  if (Serial.available()) { // Check for input from terminal 
     signalADC1 = analogRead(IR_front_left); // the read out is a signal from 0-1023 corresponding to 0-5v
-    Serial.print("FL: ");
-    Serial.println(signalADC1);
+    BluetoothSerial.print("FL: ");
+    BluetoothSerial.print(signalADC1);
+    BluetoothSerial.print(" , ");
     
     signalADC2 = analogRead(IR_front_right); // the read out is a signal from 0-1023 corresponding to 0-5v
-    Serial.print("FR: ");
-    Serial.println(signalADC2);
+    BluetoothSerial.print("FR: ");
+    BluetoothSerial.print(signalADC2);
+    BluetoothSerial.print(" , ");
 
     signalADC3 = analogRead(IR_side_left); // the read out is a signal from 0-1023 corresponding to 0-5v
-    Serial.print("SL: ");
-    Serial.println(signalADC3);
+    BluetoothSerial.print("SL: ");
+    BluetoothSerial.print(signalADC3);
+    BluetoothSerial.print(" , ");
 
     signalADC4 = analogRead(IR_side_right); // the read out is a signal from 0-1023 corresponding to 0-5v
-    Serial.print("SR: ");
-    Serial.println(signalADC4);
+    BluetoothSerial.print("SR: ");
+    BluetoothSerial.println(signalADC4);
 
     delay(500);
-  }
 }
