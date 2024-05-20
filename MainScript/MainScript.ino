@@ -239,7 +239,8 @@ void follow() { int delta;
 }
 
 // avoid function output command and flag 
-void avoid() {int val;
+void avoid() {
+     int val;
      val=ir_detect;
     //val=ir_detect();
     if (val==1)
