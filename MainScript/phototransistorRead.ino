@@ -8,10 +8,19 @@ int sumAverage;
 int sumAveragePast;
 
 void phototransistorRead() {
-  ptLeftDist = 100 - (393.8*pow(analogRead(ptLeft), -0.448))/180*100;
-  ptMidLeftDist = 100 - (398.45*pow(analogRead(ptMidLeftDist),-0.449))/180*100;
-  ptMidRightDist = 100 - (369.85*pow(analogRead(ptMidRightDist),-0.44))/180*100;
-  ptRightDist = 100 - (417.25*pow(analogRead(ptRightDist),-0.438))/180*100;
+  // ptLeftDist = analogRead(ptLeft);
+  // ptMidLeftDist = analogRead(ptMidLeft);
+  // ptMidRightDist = analogRead(ptMidRight);
+  // ptRightDist = analogRead(ptRight);
+  ptLeftDist = 100 - (393.8*pow(analogRead(ptLeft)+1, -0.448))/180 * 100;
+  ptMidLeftDist = 398.45*pow(analogRead(ptMidLeftDist)+1,-0.449);
+  ptMidRightDist = 100 - (369.85*pow(analogRead(ptMidRightDist)+1,-0.44))/180 * 100;
+  ptRightDist = 100 - (417.25*pow(analogRead(ptRightDist)+1,-0.438))/180 * 100;
+  // BluetoothSerial.println(ptLeftDist);
+  BluetoothSerial.println(ptMidLeftDist);
+  delay(100);
+  // BluetoothSerial.println(ptMidRightDist);
+  // BluetoothSerial.println(ptRightDist);
 }
 
 float phototransistorHone() {

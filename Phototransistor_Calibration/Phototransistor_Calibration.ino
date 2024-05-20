@@ -13,6 +13,7 @@ int OrangeRed = A12;
 int Black = A13;
 int GreenYellow = A14;
 int Blue = A15;
+float ptMidLeftDist = 0;
 
 void setup() {
 // put your setup code here, to run once:
@@ -21,13 +22,18 @@ void setup() {
 }
 
 void loop() {
-  BluetoothSerial.print((analogRead(OrangeRed)));
-  BluetoothSerial.print(" , ");
+  // BluetoothSerial.print((analogRead(OrangeRed)));
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.print((analogRead(Black)));
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.print((analogRead(GreenYellow)));
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.println((analogRead(Blue)));
+
   BluetoothSerial.print((analogRead(Black)));
   BluetoothSerial.print(" , ");
-  BluetoothSerial.print((analogRead(GreenYellow)));
-  BluetoothSerial.print(" , ");
-  BluetoothSerial.println((analogRead(Blue)));
+  ptMidLeftDist = 398.45*pow(analogRead(A13)+1,-0.449);
+  BluetoothSerial.println(ptMidLeftDist);
 
   delay(500);
 }

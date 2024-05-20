@@ -121,11 +121,11 @@ void setup() {
   BluetoothSerial.begin(115200);
   
   // Setup the Serial port and pointer, the pointer allows switching the debug info through the USB port(Serial) or Bluetooth port(Serial1) with ease.
-  SerialCom = &Serial1;
-  SerialCom->begin(115200);
-  SerialCom->println("MECHENG70_WE_ONNNNN");
-  delay(1000);
-  SerialCom->println("Setup....");
+  // SerialCom = &Serial1;
+  // SerialCom->begin(115200);
+  // SerialCom->println("MECHENG70_WE_ONNNNN");
+  // delay(1000);
+  // SerialCom->println("Setup....");
 
   // this section is initialize the sensor, find the value of voltage when gyro is zero
   int i;
@@ -150,37 +150,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  static STATE machine_state = INITIALISING; // start from the sate
-  INITIALISING;
-  switch (machine_state)
-  {
-    case INITIALISING:
-      machine_state = initialising();
-    break;
-    case RUNNING:
-      machine_state = running();
-    break;
-    case STOPPED:
-      machine_state = stopped();
-    break;
-  }
+  // static STATE machine_state = INITIALISING; // start from the sate
+  // INITIALISING;
+  // switch (machine_state)
+  // {
+  //   case INITIALISING:
+  //     machine_state = initialising();
+  //   break;
+  //   case RUNNING:
+  //     machine_state = running();
+  //   break;
+  //   case STOPPED:
+  //     machine_state = stopped();
+  //   break;
+  // }
 
-  // servoMotor();
-  // delay(1000);
-}
+  enable_motors(); 
 
-STATE initialising(){
-  enable_motors();                                 // enable motors 
-  Serial.println("INITIALISING");        // print the current stage 
-  return RUNNING;                               // return to RUNING STATE DIRECTLY 
-}
-
-STATE running(){
   //read_serial_command();                      // read command from serial communication
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // this is just for test functions to read simulative                       sensor reading from monitor
   serial_read_conditions();  
-  // four function
+  //five functions
   search(); 
   cruise(); 
   follow(); 
@@ -194,14 +185,41 @@ STATE running(){
   bumper_left = 0;
   bumper_right = 0;
   bumper_back = 0; 
-  return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
-                   
-}                                                            // STATE REPEATLY 
-
-
-STATE stopped(){
-disable_motors();                           // disable the motors
 }
+
+// STATE initialising(){
+//   enable_motors();                                 // enable motors 
+//   Serial.println("INITIALISING");        // print the current stage 
+//   return RUNNING;                               // return to RUNING STATE DIRECTLY 
+// }
+
+// STATE running(){
+//   //read_serial_command();                      // read command from serial communication
+//   speed_change_smooth();                 //function to speed up and slow down smoothly 
+//   // this is just for test functions to read simulative                       sensor reading from monitor
+//   serial_read_conditions();  
+//   // four function
+//   search(); 
+//   cruise(); 
+//   follow(); 
+//   avoid(); 
+//   escape();
+//   // select the output command based on the function priority 
+//   arbitrate();
+//   photo_left = 0; 
+//   photo_right = 0;
+//   ir_detect = 0; 
+//   bumper_left = 0;
+//   bumper_right = 0;
+//   bumper_back = 0; 
+//   return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
+                   
+// }                                                            // STATE REPEATLY 
+
+
+// STATE stopped(){
+// disable_motors();                           // disable the motors
+// }
 
 
   void speed_change_smooth()                  // change speed, called in RUNING STATE
@@ -224,7 +242,7 @@ void cruise() {
   phototransistorRead();
   if ((ptLeftDist > 20) | (ptMidLeftDist > 20) | (ptMidRightDist > 20) | (ptRightDist > 20)) {
     cruise_output_flag=1;
-    BluetoothSerial.println("AHHHHH");
+    
   } else {
     cruise_output_flag=0;
   }
