@@ -149,24 +149,24 @@ void setup() {
 }
 
 void loop() {
-  // // put your main code here, to run repeatedly:
-  // static STATE machine_state = INITIALISING; // start from the sate
-  // INITIALISING;
-  // switch (machine_state)
-  // {
-  //   case INITIALISING:
-  //     machine_state = initialising();
-  //   break;
-  //   case RUNNING:
-  //     machine_state = running();
-  //   break;
-  //   case STOPPED:
-  //     machine_state = stopped();
-  //   break;
-  // }
+  // put your main code here, to run repeatedly:
+  static STATE machine_state = INITIALISING; // start from the sate
+  INITIALISING;
+  switch (machine_state)
+  {
+    case INITIALISING:
+      machine_state = initialising();
+    break;
+    case RUNNING:
+      machine_state = running();
+    break;
+    case STOPPED:
+      machine_state = stopped();
+    break;
+  }
 
-  servoMotor();
-  delay(1000);
+  // servoMotor();
+  // delay(1000);
 }
 
 STATE initialising(){
@@ -222,8 +222,9 @@ void cruise() {
   cruise_command = FORWARD;
 
   phototransistorRead();
-  if ((ptLeftDist > 5) | (ptMidLeftDist > 5) | (ptMidRightDist > 5) | (ptRightDist > 5)) {
-    cruise_output_flag=1; 
+  if ((ptLeftDist > 20) | (ptMidLeftDist > 20) | (ptMidRightDist > 20) | (ptRightDist > 20)) {
+    cruise_output_flag=1;
+    BluetoothSerial.println("AHHHHH");
   } else {
     cruise_output_flag=0;
   }
