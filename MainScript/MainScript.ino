@@ -150,23 +150,20 @@ void setup() {
 
 void loop() {
   // // put your main code here, to run repeatedly:
-  // static STATE machine_state = INITIALISING; // start from the sate
-  // INITIALISING;
-  // switch (machine_state)
-  // {
-  //   case INITIALISING:
-  //     machine_state = initialising();
-  //   break;
-  //   case RUNNING:
-  //     machine_state = running();
-  //   break;
-  //   case STOPPED:
-  //     machine_state = stopped();
-  //   break;
-  // }
-
-  servoMotor();
-  delay(1000);
+  static STATE machine_state = INITIALISING; // start from the sate
+  INITIALISING;
+  switch (machine_state)
+  {
+    case INITIALISING:
+      machine_state = initialising();
+    break;
+    case RUNNING:
+      machine_state = running();
+    break;
+    case STOPPED:
+      machine_state = stopped();
+    break;
+  }
 }
 
 STATE initialising(){
@@ -180,7 +177,7 @@ STATE running(){
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // this is just for test functions to read simulative                       sensor reading from monitor
   serial_read_conditions();  
-  // four function
+  // five functions function
   search(); 
   cruise(); 
   follow(); 

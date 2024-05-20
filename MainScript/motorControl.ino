@@ -15,7 +15,7 @@ switch(motor_input)
   break;
   
   case BACKWARD:
-  reverse ();
+  reverse();
   delay(1000);
   break;
   
