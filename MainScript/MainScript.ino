@@ -39,6 +39,8 @@ int bumper_left;
 int bumper_right;
 int bumper_back;
 
+bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightProx,bumper_frontProx;
+
 // define threshold of phototransistor  difference 
 int photo_dead_zone = 5;
 
@@ -259,23 +261,42 @@ void avoid() {
 
 
 //escape function output command and flag
+//bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightProx,bumper_frontProx;
+
+// // define motions states
+// enum MOTION{
+// FORWARD,
+// BACKWARD,
+// LEFT_TURN,
+// RIGHT_TURN,
+// LEFT_ARC,
+// RIGHT_ARC,
+// BACKWARD_LEFT_TURN,
+// };
+
 void escape() { 
-//bumper_check();
-if (bumper_left && bumper_right)
+bumper_check();
+if (bumper_frontProx)
+  {escape_output_flag=1;
+  escape_command=BACKWARD;
+ }
+ 
+else if (bumper_leftProx)
+  {escape_output_flag=1;
+  escape_command=RIGHT_ARC;
+  }
+else if (bumper_rightProx)
+  {escape_output_flag=1;
+  escape_command=LEFT_ARC;
+  }
+else if (bumper_frontleftProx)
   {escape_output_flag=1;
   escape_command=BACKWARD_LEFT_TURN;
- }
-else if (bumper_left)
-  {escape_output_flag=1;
-  escape_command=RIGHT_TURN;
   }
-else if (bumper_right)
+//SHOULD THERE BE A BACKWARD RIGHT TURN???
+else if (bumper_frontleftProx)
   {escape_output_flag=1;
-  escape_command=LEFT_TURN;
-  }
-else if (bumper_back)
-  {escape_output_flag=1;
-  escape_command=LEFT_TURN;
+  escape_command=BACKWARD;
   }
 else
   escape_output_flag=0;   
@@ -292,6 +313,45 @@ void arbitrate () {
   if (escape_output_flag==1)
   {motor_input=escape_command;}
   robotMove();                                    
+}
+
+
+
+void bumper_check(){
+  
+  // Allocate array to hold current sensor values
+
+  float* current_sensors = irRead();
+  if ( current_sensors[1] < 5){
+    bumper_frontrightProx = true;
+  }else{
+    bumper_frontrightProx = false;    
+  }
+
+  if( current_sensors[0]< 5){
+    bumper_frontleftProx = true;
+  }else{
+    bumper_frontleftProx = false;
+  }
+
+  if(current_sensors[2]< 5){
+    bumper_leftProx = true;
+  }else{
+    bumper_leftProx = false;
+  }
+
+  if(current_sensors[3]<5){
+    bumper_rightProx = true;
+  }else{
+    bumper_rightProx = false;
+  }
+
+  if(sonarRead() < 5){
+    bumper_rightProx = true; 
+  }else{
+    bumper_rightProx = false;
+  }
+
 }
 
 
