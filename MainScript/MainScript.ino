@@ -98,6 +98,8 @@ BACKWARD_LEFT_TURN,
 };
 
 // declare function output and function flag
+MOTION search_command;
+int search_output_flag;
 MOTION cruise_command;
 int cruise_output_flag;
 MOTION follow_command;
@@ -178,7 +180,8 @@ STATE running(){
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // this is just for test functions to read simulative                       sensor reading from monitor
   serial_read_conditions();  
-  // four function 
+  // four function
+  search(); 
   cruise(); 
   follow(); 
   avoid(); 
@@ -209,14 +212,20 @@ disable_motors();                           // disable the motors
    speed_change = 0;    //make speed change equals 0 after updating the speed value 
 }
 
+void search() {
+  search_command = RIGHT_TURN;
+  search_output_flag=1;
+}
+
 // cruise function output command and flag
 void cruise() {
   cruise_command = FORWARD;
-  cruise_output_flag=1; 
-  turnServo;
-  phototransistorRead();
-  if ((ptLeftDist > 0) | (ptMidLeftDist > 0) | (ptMidRightDist > 0) | (ptRightDist > 0)) {
 
+  phototransistorRead();
+  if ((ptLeftDist > 5) | (ptMidLeftDist > 5) | (ptMidRightDist > 5) | (ptRightDist > 5)) {
+    cruise_output_flag=1; 
+  } else {
+    cruise_output_flag=0;
   }
 }
 
@@ -283,6 +292,8 @@ else
 
 // check flag and select command based on priority 
 void arbitrate () {
+  if (search_output_flag==1)
+  {motor_input=search_command;}
   if (cruise_output_flag==1)
   {motor_input=cruise_command;}
   if (follow_output_flag==1)
