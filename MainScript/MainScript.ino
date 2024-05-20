@@ -191,10 +191,8 @@ STATE running(){
   bumper_left = 0;
   bumper_right = 0;
   bumper_back = 0; 
-  return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
-                   
+  return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING                   
 }                                                            // STATE REPEATLY 
-
 
 STATE stopped(){
 disable_motors();                           // disable the motors

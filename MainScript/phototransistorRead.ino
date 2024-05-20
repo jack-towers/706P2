@@ -6,6 +6,7 @@ int sumPast4 = 0;
 int sumPast5 = 0;
 int sumAverage;
 int sumAveragePast;
+int stop = 0;
 
 void phototransistorRead() {
   ptLeftDist = analogRead(ptLeft);
