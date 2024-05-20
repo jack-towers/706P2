@@ -4,11 +4,6 @@ const byte left_rear = 47;
 const byte right_rear = 50;
 const byte right_front = 51;
 
-Servo left_font_motor;   // create servo object to control Vex Motor Controller 29
-Servo left_rear_motor;   // create servo object to control Vex Motor Controller 29
-Servo right_rear_motor;  // create servo object to control Vex Motor Controller 29
-Servo right_font_motor;  // create servo object to control Vex Motor Controller 29
-
 // connect the selected commands to the robot motions 
 void robotMove()
 {
@@ -26,12 +21,12 @@ switch(motor_input)
   
   case LEFT_TURN:
   ccw();
- delay(1000);
+  delay(1000);
   break;
  
   case RIGHT_TURN:
   cw();
- delay(1000);
+  delay(1000);
   break;
  
   case LEFT_ARC:
@@ -41,7 +36,7 @@ switch(motor_input)
  
   case RIGHT_ARC:
   strafe_right();
-   delay(1000);
+  delay(1000);
   break;
 
   case BACKWARD_LEFT_TURN:

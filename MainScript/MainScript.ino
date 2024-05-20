@@ -1,7 +1,48 @@
 #include <Servo.h>  //Need for Servo pulse output
 #include <SoftwareSerial.h>
 
+// create servo objects for each motor 
+Servo left_front_motor;   // create servo object to control Vex Motor Controller 29
+Servo left_rear_motor;   // create servo object to control Vex Motor Controller 29
+Servo right_rear_motor;  // create servo object to control Vex Motor Controller 29
+Servo right_front_motor;  // create servo object to control Vex Motor Controller 29
+
+//servoMotor for fan
+const byte fan_servo = 45;
+Servo fan_servo_motor; 
+
+int speed_val = 100;
+int speed_change;
+
+//Phototransistor initialisations
+int ptLeft = A12;
+int ptMidLeft = A13;
+int ptMidRight = A14;
+int ptRight = A15;
+
+float ptLeftDist;
+float ptMidLeftDist;
+float ptMidRightDist;
+float ptRightDist;
+
+int ongoingAngle = 1500;
+int angleIncrement = 40; //6.666667 is 1 degree
+int turnDirection = 0;
+
 Servo turret_motor;
+
+//  define the sensor reading results 
+int photo_left;
+int photo_right;
+int ir_detect;
+int bumper_left;
+int bumper_right;
+int bumper_back;
+
+bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightProx,bumper_frontProx;
+
+// define threshold of phototransistor  difference 
+int photo_dead_zone = 5;
 
 //Default ultrasonic ranging sensor pins, these pins are defined my the Shield
 const int TRIG_PIN = 4;
@@ -72,6 +113,7 @@ MOTION motor_input;
 
 void setup() {
   turret_motor.attach(11);
+  fan_servo_motor.attach(45);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(FAN_PIN, OUTPUT);
   pinMode(TRIG_PIN, OUTPUT);
@@ -102,25 +144,29 @@ void setup() {
   delay(1000);  //settling time but no really needed
   /////////
 
+  fan_servo_motor.writeMicroseconds(1500);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  static STATE machine_state = INITIALISING; // start from the sate
-  INITIALIING
-  switch (machine_state)
-  {
-    case INITIALISING:
-      machine_state = initialising();
-    break;
-    case RUNNING:
-      machine_state = running();
-    break;
-    case STOPPED:
-      machine_state = stopped();
-    break;
-  }
-  fanRun();
+  // // put your main code here, to run repeatedly:
+  // static STATE machine_state = INITIALISING; // start from the sate
+  // INITIALISING;
+  // switch (machine_state)
+  // {
+  //   case INITIALISING:
+  //     machine_state = initialising();
+  //   break;
+  //   case RUNNING:
+  //     machine_state = running();
+  //   break;
+  //   case STOPPED:
+  //     machine_state = stopped();
+  //   break;
+  // }
+
+  servoMotor();
+  delay(1000);
 }
 
 STATE initialising(){
@@ -166,15 +212,18 @@ disable_motors();                           // disable the motors
 }
 
 // cruise function output command and flag
-void cruise()
-{
+void cruise() {
   cruise_command = FORWARD;
   cruise_output_flag=1; 
+  turnServo;
+  phototransistorRead();
+  if ((ptLeftDist > 0) | (ptMidLeftDist > 0) | (ptMidRightDist > 0) | (ptRightDist > 0)) {
+
   }
+}
 
 // follow function output command and flag
-void follow()
-{ int delta;
+void follow() { int delta;
   //int left_photo, right_photo, delta;
     //left_photo=analog(1);
    // right_photo=analog(0);
@@ -192,8 +241,8 @@ void follow()
 }
 
 // avoid function output command and flag 
-void avoid()
-{int val;
+void avoid() {
+     int val;
      val=ir_detect;
     //val=ir_detect();
     if (val==1)
@@ -212,32 +261,49 @@ void avoid()
 
 
 //escape function output command and flag
-void escape()
-{ 
-//bumper_check();
-if (bumper_left && bumper_right)
+//bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightProx,bumper_frontProx;
+
+// // define motions states
+// enum MOTION{
+// FORWARD,
+// BACKWARD,
+// LEFT_TURN,
+// RIGHT_TURN,
+// LEFT_ARC,
+// RIGHT_ARC,
+// BACKWARD_LEFT_TURN,
+// };
+
+void escape() { 
+bumper_check();
+if (bumper_frontProx)
+  {escape_output_flag=1;
+  escape_command=BACKWARD;
+ }
+ 
+else if (bumper_leftProx)
+  {escape_output_flag=1;
+  escape_command=RIGHT_ARC;
+  }
+else if (bumper_rightProx)
+  {escape_output_flag=1;
+  escape_command=LEFT_ARC;
+  }
+else if (bumper_frontleftProx)
   {escape_output_flag=1;
   escape_command=BACKWARD_LEFT_TURN;
- }
-else if (bumper_left)
-  {escape_output_flag=1;
-  escape_command=RIGHT_TURN;
   }
-else if (bumper_right)
+//SHOULD THERE BE A BACKWARD RIGHT TURN???
+else if (bumper_frontleftProx)
   {escape_output_flag=1;
-  escape_command=LEFT_TURN;
-  }
-else if (bumper_back)
-  {escape_output_flag=1;
-  escape_command=LEFT_TURN;
+  escape_command=BACKWARD;
   }
 else
   escape_output_flag=0;   
 }
 
 // check flag and select command based on priority 
-void arbitrate ()
- {
+void arbitrate () {
   if (cruise_output_flag==1)
   {motor_input=cruise_command;}
   if (follow_output_flag==1)
@@ -247,6 +313,45 @@ void arbitrate ()
   if (escape_output_flag==1)
   {motor_input=escape_command;}
   robotMove();                                    
+}
+
+
+
+void bumper_check(){
+  
+  // Allocate array to hold current sensor values
+
+  float* current_sensors = irRead();
+  if ( current_sensors[1] < 5){
+    bumper_frontrightProx = true;
+  }else{
+    bumper_frontrightProx = false;    
   }
+
+  if( current_sensors[0]< 5){
+    bumper_frontleftProx = true;
+  }else{
+    bumper_frontleftProx = false;
+  }
+
+  if(current_sensors[2]< 5){
+    bumper_leftProx = true;
+  }else{
+    bumper_leftProx = false;
+  }
+
+  if(current_sensors[3]<5){
+    bumper_rightProx = true;
+  }else{
+    bumper_rightProx = false;
+  }
+
+  if(sonarRead() < 5){
+    bumper_rightProx = true; 
+  }else{
+    bumper_rightProx = false;
+  }
+
+}
 
 
