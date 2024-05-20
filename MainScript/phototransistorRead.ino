@@ -8,10 +8,10 @@ int sumAverage;
 int sumAveragePast;
 
 void phototransistorRead() {
-  ptLeftDist = analogRead(ptLeft);
-  ptMidLeftDist = analogRead(ptMidLeftDist);
-  ptMidRightDist = analogRead(ptMidRightDist);
-  ptRightDist = analogRead(ptRightDist);
+  ptLeftDist = 100 - (393.8*pow(analogRead(ptLeft), -0.448))/180*100;
+  ptMidLeftDist = 100 - (398.45*pow(analogRead(ptMidLeftDist),-0.449))/180*100;
+  ptMidRightDist = 100 - (369.85*pow(analogRead(ptMidRightDist),-0.44))/180*100;
+  ptRightDist = 100 - (417.25*pow(analogRead(ptRightDist),-0.438))/180*100;
 }
 
 float phototransistorHone() {
