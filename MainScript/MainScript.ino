@@ -45,8 +45,8 @@ bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightPro
 int photo_dead_zone = 5;
 
 //Default ultrasonic ranging sensor pins, these pins are defined my the Shield
-const int TRIG_PIN = 4;
-const int ECHO_PIN = 5;
+const int TRIG_PIN = A3;
+const int ECHO_PIN = A1;
 
 const int FAN_PIN = 42;
 
@@ -57,12 +57,12 @@ float gyroRate = 0;
 float gyroZeroVoltage = 0;
 
 //Serial Pointer
-HardwareSerial *SerialCom;
+//HardwareSerial *SerialCom;
 
 // Serial Data input pin
-#define BLUETOOTH_RX 10
+#define BLUETOOTH_RX 8
 // Serial Data output pin
-#define BLUETOOTH_TX 11
+#define BLUETOOTH_TX 9
 
 // USB Serial Port
 #define OUTPUTMONITOR 0
@@ -112,6 +112,7 @@ MOTION escape_command;
 int escape_output_flag;
 MOTION motor_input;
 
+String mode;
 
 void setup() {
   turret_motor.attach(11);
@@ -123,11 +124,8 @@ void setup() {
   BluetoothSerial.begin(115200);
   
   // Setup the Serial port and pointer, the pointer allows switching the debug info through the USB port(Serial) or Bluetooth port(Serial1) with ease.
-  SerialCom = &Serial1;
-  SerialCom->begin(115200);
-  SerialCom->println("MECHENG70_WE_ONNNNN");
-  delay(1000);
-  SerialCom->println("Setup....");
+  //SerialCom = &Serial1;
+ 
 
   // this section is initialize the sensor, find the value of voltage when gyro is zero
   int i;
@@ -137,13 +135,13 @@ void setup() {
   Serial.println("get the gyro zero voltage");
   for (i = 0; i < 100; i++)  // read 100 values of voltage when gyro is at still, to calculate the zero-drift.
   {
-  sensorValue = analogRead(sensorPin);
-  sum += sensorValue;
-  delay(5);
+    sensorValue = analogRead(sensorPin);
+    sum += sensorValue;
+    delay(5);
   }
   gyroZeroVoltage = sum / 100;  // average the sum as the zero drifting
 
-  delay(1000);  //settling time but no really needed
+ // delay(1000);  //settling time but no really needed
   /////////
 
   fan_servo_motor.writeMicroseconds(1500);
@@ -181,8 +179,10 @@ STATE running(){
   //read_serial_command();                      // read command from serial communication
   speed_change_smooth();                 //function to speed up and slow down smoothly 
   // this is just for test functions to read simulative                       sensor reading from monitor
-  serial_read_conditions();  
+  //serial_read_conditions();  
   // four function
+  BluetoothSerial.print("Current State: ");
+  BluetoothSerial.println(mode);
   search(); 
   cruise(); 
   follow(); 
@@ -196,7 +196,9 @@ STATE running(){
   bumper_left = 0;
   bumper_right = 0;
   bumper_back = 0; 
-  return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
+  
+  //delay(50);
+ return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
                    
 }                                                            // STATE REPEATLY 
 
@@ -221,19 +223,22 @@ void search() {
 
 // cruise function output command and flag
 void cruise() {
+  mode = "cruise";
   cruise_command = FORWARD;
 
   phototransistorRead();
   if ((ptLeftDist > 20) | (ptMidLeftDist > 20) | (ptMidRightDist > 20) | (ptRightDist > 20)) {
     cruise_output_flag=1;
-    BluetoothSerial.println("AHHHHH");
+    //BluetoothSerial.println("AHHHHH");
   } else {
     cruise_output_flag=0;
   }
 }
 
 // follow function output command and flag
-void follow() { int delta;
+void follow() {
+  mode = "follow";
+   int delta;
   //int left_photo, right_photo, delta;
     //left_photo=analog(1);
    // right_photo=analog(0);
@@ -252,6 +257,7 @@ void follow() { int delta;
 
 // avoid function output command and flag 
 void avoid() {
+    mode = "avoid";
      int val;
      val=ir_detect;
     //val=ir_detect();
@@ -273,42 +279,39 @@ void avoid() {
 //escape function output command and flag
 //bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightProx,bumper_frontProx;
 
-// // define motions states
-// enum MOTION{
-// FORWARD,
-// BACKWARD,
-// LEFT_TURN,
-// RIGHT_TURN,
-// LEFT_ARC,
-// RIGHT_ARC,
-// BACKWARD_LEFT_TURN,
-// };
 
 void escape() { 
+mode = "escape";
 bumper_check();
 if (bumper_frontProx)
   {escape_output_flag=1;
+  BluetoothSerial.println("Object in front");  
   escape_command=BACKWARD;
  }
  
 else if (bumper_leftProx)
   {escape_output_flag=1;
+  BluetoothSerial.println("Object on left");
   escape_command=RIGHT_ARC;
   }
 else if (bumper_rightProx)
   {escape_output_flag=1;
+  BluetoothSerial.println("Object on right");
   escape_command=LEFT_ARC;
   }
-else if (bumper_frontleftProx)
+else if (bumper_frontrightProx)
   {escape_output_flag=1;
+   BluetoothSerial.println("Object on front right");
   escape_command=BACKWARD_LEFT_TURN;
   }
 //SHOULD THERE BE A BACKWARD RIGHT TURN???
 else if (bumper_frontleftProx)
   {escape_output_flag=1;
+  BluetoothSerial.println("Object on front left");
   escape_command=BACKWARD;
   }
 else
+BluetoothSerial.println("Clear");
   escape_output_flag=0;   
 }
 
@@ -327,7 +330,7 @@ void arbitrate () {
   robotMove();                                    
 }
 
-
+//Sensor Checkkssss
 
 void bumper_check(){
   
@@ -353,17 +356,23 @@ void bumper_check(){
   }
 
   if(current_sensors[3]<5){
+    BluetoothSerial.print("Distance Right");
+    BluetoothSerial.println(current_sensors[3]);
     bumper_rightProx = true;
   }else{
     bumper_rightProx = false;
   }
 
   if(sonarRead() < 5){
-    bumper_rightProx = true; 
+    bumper_frontProx = true; 
+    BluetoothSerial.print("Distance: "); 
+    BluetoothSerial.println(sonarRead());
   }else{
-    bumper_rightProx = false;
+    bumper_frontProx = false;
   }
 
 }
 
 
+
+////////////////////////////

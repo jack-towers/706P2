@@ -33,11 +33,11 @@ float phototransistorHone() {
 
     if (turnDirection = 1) {
       ccw();
-      delay(500);
+      //delay(500);
       stop();
     } else {
       cw();
-      delay(500);
+     // delay(500);
       stop();
     }
 

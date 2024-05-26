@@ -11,37 +11,37 @@ switch(motor_input)
 {
   case FORWARD:
   forward ();
-  delay(1000);
+ // delay(1000);
   break;
   
   case BACKWARD:
   reverse ();
-  delay(1000);
+ // delay(1000);
   break;
   
   case LEFT_TURN:
   ccw();
-  delay(1000);
+ // delay(1000);
   break;
  
   case RIGHT_TURN:
   cw();
-  delay(1000);
+ // delay(1000);
   break;
  
   case LEFT_ARC:
   strafe_left();
-  delay(1000);
+ // delay(1000);
   break;
  
   case RIGHT_ARC:
   strafe_right();
-  delay(1000);
+  //delay(1000);
   break;
 
   case BACKWARD_LEFT_TURN:
   reverse_ccw();
-  delay(1000);
+  //delay(1000);
   break;
   }
 }
@@ -116,7 +116,7 @@ void reverse_ccw()
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  delay(500);
+  //delay(500);
   left_front_motor.writeMicroseconds(1500 - speed_val);
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 - speed_val);
