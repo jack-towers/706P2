@@ -211,8 +211,7 @@ STATE running(){
   bumper_back = 0; 
   
   //delay(50);
- return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING    
-                   
+ return RUNNING;   // return to RUNNING STATE again, it will run the RUNNING                 
 }                                                            // STATE REPEATLY 
 
 STATE stopped(){
@@ -220,7 +219,7 @@ disable_motors();                           // disable the motors
 }
 
 
-  void speed_change_smooth()                  // change speed, called in RUNING STATE
+void speed_change_smooth()                  // change speed, called in RUNING STATE
 {
   speed_val += speed_change;                  // speed value add on speed change 
    if(speed_val > 500)                          // make sure speed change less than 1000
@@ -239,14 +238,14 @@ void cruise() {
   cruise_command = FORWARD;
 
   phototransistorRead();
-    BluetoothSerial.print(ptLeftDist);
-    BluetoothSerial.print(" , ");
-    BluetoothSerial.print(ptMidLeftDist);
-    BluetoothSerial.print(" , ");
-    BluetoothSerial.print(ptMidRightDist);
-    BluetoothSerial.print(" , ");
-    BluetoothSerial.println(ptRightDist);
-  if (((ptLeftDist > 25) | (ptMidLeftDist > 25) | (ptMidRightDist > 25) | (ptRightDist > 25)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155) & (abs(ptRightDist - ptLeftDist) < 25))) {
+    // BluetoothSerial.print(ptLeftDist);
+    // BluetoothSerial.print(" , ");
+    // BluetoothSerial.print(ptMidLeftDist);
+    // BluetoothSerial.print(" , ");
+    // BluetoothSerial.print(ptMidRightDist);
+    // BluetoothSerial.print(" , ");
+    // BluetoothSerial.println(ptRightDist);
+  if (((ptLeftDist > 60) | (ptMidLeftDist > 35) | (ptMidRightDist > 35) | (ptRightDist > 35)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155) & (abs(ptRightDist - ptLeftDist) < 25))) {
     cruise_output_flag=1;
     BluetoothSerial.println("In Cruise");
   } else {
@@ -259,16 +258,23 @@ void cruise() {
 void follow() {
   mode = "follow";
   phototransistorRead();
-
-  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 25)) {
-     BluetoothSerial.println("In Follow");
+  BluetoothSerial.print(ptLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidRightDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.println(ptRightDist);
+  
+  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 15)) {
     if (ptRightDist > ptLeftDist) {
+      BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
     }  else {
+      BluetoothSerial.println("Follow Right");
       follow_command=RIGHT_TURN;
     }
     follow_output_flag=1;
-
   } else {
     follow_output_flag=0;
   }         
@@ -292,9 +298,8 @@ void avoid() {
       {avoid_output_flag=1;
       avoid_command=LEFT_ARC;}
     else
-      {avoid_output_flag=0;}
-     
- }
+      {avoid_output_flag=0;}   
+}
 
 
 //escape function output command and flag
@@ -302,69 +307,59 @@ void avoid() {
 
 
 void escape() { 
-mode = "escape";
-bumper_check();
-if (bumper_frontProx)
-  {escape_output_flag=1;
-  BluetoothSerial.println("Object in front");  
-  escape_command=BACKWARD;
- }
- 
-else if (bumper_leftProx)
-  {escape_output_flag=1;
-  BluetoothSerial.println("Object on left");
-  escape_command=RIGHT_ARC;
+  mode = "escape";
+  bumper_check();
+  if (bumper_frontProx) {
+    escape_output_flag=1;
+    BluetoothSerial.println("Object in front");  
+    escape_command=BACKWARD;
+  } else if (bumper_leftProx) {
+    escape_output_flag=1;
+    BluetoothSerial.println("Object on left");
+    escape_command=RIGHT_ARC;
+  } else if (bumper_rightProx) {
+    escape_output_flag=1;
+    BluetoothSerial.println("Object on right");
+    escape_command=LEFT_ARC;
+  } else if (bumper_frontrightProx) { 
+    escape_output_flag=1;
+    BluetoothSerial.println("Object on front right");
+    escape_command=BACKWARD_LEFT_TURN;
   }
-else if (bumper_rightProx)
-  {escape_output_flag=1;
-  BluetoothSerial.println("Object on right");
-  escape_command=LEFT_ARC;
+  //SHOULD THERE BE A BACKWARD RIGHT TURN???
+  else if (bumper_frontleftProx) {
+    escape_output_flag=1;
+    BluetoothSerial.println("Object on front left");
+    escape_command=BACKWARD;
+  } else {
+    BluetoothSerial.println("Clear");
+    escape_output_flag=0;   
   }
-else if (bumper_frontrightProx)
-  {escape_output_flag=1;
-   BluetoothSerial.println("Object on front right");
-  escape_command=BACKWARD_LEFT_TURN;
-  }
-//SHOULD THERE BE A BACKWARD RIGHT TURN???
-else if (bumper_frontleftProx)
-  {escape_output_flag=1;
-  BluetoothSerial.println("Object on front left");
-  escape_command=BACKWARD;
-  }
-else
-  BluetoothSerial.println("Clear");
-  escape_output_flag=0;   
 }
 
 void targetAcquired (){
-
-  if((ptLeftDist < 60) | (ptMidLeftDist < 35) | (ptMidRightDist < 35) | (ptRightDist < 60)){
+  if((ptLeftDist < 50) & (ptMidLeftDist < 30) & (ptMidRightDist < 50) & (ptRightDist < 60)){
     target_acquired_flag = 1;
     target_acquired_command = STOP;
-
     fanRun();
- }
-  else{
+  } else{
     target_acquired_flag = 0;
   }
- 
-
-
 }
 
 // check flag and select command based on priority 
 void arbitrate () {
-  if (search_output_flag==1)
+  if(search_output_flag==1)
   {motor_input=search_command;}
-  if (cruise_output_flag==1)
+  if(cruise_output_flag==1)
   {motor_input=cruise_command;}
-  if (follow_output_flag==1)
+  if(follow_output_flag==1)
   {motor_input=follow_command;}
-  if (avoid_output_flag ==1)
+  if(avoid_output_flag ==1)
   {motor_input=avoid_command;}
-  if (escape_output_flag==1)
+  if(escape_output_flag==1)
   {motor_input=escape_command;}
-  if (target_acquired_flag==1)
+  if(target_acquired_flag==1)
   {motor_input=target_acquired_command;}
   BluetoothSerial.print("Command is:");
   BluetoothSerial.println(motor_input);
@@ -404,10 +399,11 @@ void bumper_check(){
     bumper_rightProx = false;
   }
 
-  if(sonarRead() < 5){
+  int front_detect = sonarRead();
+  if(front_detect < 5){
     bumper_frontProx = true; 
     BluetoothSerial.print("Distance: "); 
-    BluetoothSerial.println(sonarRead());
+    BluetoothSerial.println(front_detect);
   }else{
     bumper_frontProx = false;
   }

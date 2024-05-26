@@ -6,33 +6,28 @@ int sumPast4 = 0;
 int sumPast5 = 0;
 int sumAverage;
 int sumAveragePast;
-int stop = 0;
+int stopit = 0;
 
 void phototransistorRead() {
-  
- 
-
- 
-
-  if (analogRead(ptLeft) < 10) {
+  if (analogRead(ptLeft) < 15) {
     ptLeftDist = 180;
   }else{
     ptLeftDist = 393.8*pow(analogRead(ptLeft), -0.448);
   }
-  if (analogRead(ptMidLeft) < 10) {
+  if (analogRead(ptMidLeft) < 15) {
       ptMidLeftDist = 180;
   }else{
-    ptMidLeftDist = 398.45*pow(analogRead(ptMidLeftDist),-0.449);
+    ptMidLeftDist = 398.45*pow(analogRead(ptMidLeft),-0.449);
   }
-  if (analogRead(ptMidRight) < 10) {
+  if (analogRead(ptMidRight) < 15) {
     ptMidRightDist = 180;
   }else{
-    ptMidRightDist = 369.85*pow(analogRead(ptMidRightDist),-0.44);
+    ptMidRightDist = 369.85*pow(analogRead(ptMidRight),-0.44);
   }
-  if (analogRead(ptRight) < 10) {
+  if (analogRead(ptRight) < 15) {
     ptRightDist = 180;
   }else{
-    ptRightDist = 417.25*pow(analogRead(ptRightDist),-0.438);
+    ptRightDist = 417.25*pow(analogRead(ptRight),-0.438);
   }
 }
 
@@ -49,7 +44,7 @@ float phototransistorHone() {
 
   while (sumAverage > sumAveragePast) {
 
-    if (stop == 0) {
+    if (stopit == 0) {
       honeServo();
     }
 
