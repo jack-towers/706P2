@@ -181,12 +181,20 @@ STATE running(){
   // this is just for test functions to read simulative                       sensor reading from monitor
   //serial_read_conditions();  
   // four function
-  BluetoothSerial.print("Current State: ");
-  BluetoothSerial.println(mode);
+  //BluetoothSerial.print("Current State: ");
+  //BluetoothSerial.println(mode);
   search(); 
+  // BluetoothSerial.print("Current State: ");
+  // BluetoothSerial.println(mode);
   cruise(); 
+  // BluetoothSerial.print("Current State: ");
+  // BluetoothSerial.println(mode);
   follow(); 
+  //BluetoothSerial.print("Current State: ");
+  //BluetoothSerial.println(mode);
   avoid(); 
+  //BluetoothSerial.print("Current State: ");
+  //BluetoothSerial.println(mode);
   escape();
   // select the output command based on the function priority 
   arbitrate();
@@ -227,9 +235,16 @@ void cruise() {
   cruise_command = FORWARD;
 
   phototransistorRead();
-  if ((ptLeftDist > 20) | (ptMidLeftDist > 20) | (ptMidRightDist > 20) | (ptRightDist > 20)) {
+    BluetoothSerial.print(ptLeftDist);
+    BluetoothSerial.print(" , ");
+    BluetoothSerial.print(ptMidLeftDist);
+    BluetoothSerial.print(" , ");
+    BluetoothSerial.print(ptMidRightDist);
+    BluetoothSerial.print(" , ");
+    BluetoothSerial.println(ptRightDist);
+  if ((ptLeftDist > 120) | (ptMidLeftDist > 120) | (ptMidRightDist > 120) | (ptRightDist > 120)) {
     cruise_output_flag=1;
-    //BluetoothSerial.println("AHHHHH");
+    BluetoothSerial.println("In Cruise");
   } else {
     cruise_output_flag=0;
   }
@@ -238,21 +253,19 @@ void cruise() {
 // follow function output command and flag
 void follow() {
   mode = "follow";
-   int delta;
-  //int left_photo, right_photo, delta;
-    //left_photo=analog(1);
-   // right_photo=analog(0);
-    delta=photo_right - photo_left;
-    if (abs(delta)>photo_dead_zone)
-      {if (delta>0)
-        follow_command=LEFT_TURN;
-      else 
-        follow_command=RIGHT_TURN;
-      follow_output_flag=1;
-      }
-    else
-      follow_output_flag=0;
-             
+  if ((ptLeftDist < 120) | (ptMidLeftDist < 120) | (ptMidRightDist < 120) | (ptRightDist < 120)) {
+    phototransistorRead();
+
+    if (ptRightDist > ptLeftDist) {
+      follow_command=LEFT_TURN;
+    }  else {
+      follow_command=RIGHT_TURN;
+    }
+    follow_output_flag=1;
+    
+  } else {
+    follow_output_flag=0;
+  }         
 }
 
 // avoid function output command and flag 
@@ -311,7 +324,7 @@ else if (bumper_frontleftProx)
   escape_command=BACKWARD;
   }
 else
-BluetoothSerial.println("Clear");
+  BluetoothSerial.println("Clear");
   escape_output_flag=0;   
 }
 
@@ -327,6 +340,8 @@ void arbitrate () {
   {motor_input=avoid_command;}
   if (escape_output_flag==1)
   {motor_input=escape_command;}
+  BluetoothSerial.print("Command is:");
+  BluetoothSerial.println(motor_input);
   robotMove();                                    
 }
 

@@ -10,38 +10,38 @@ void robotMove()
 switch(motor_input)
 {
   case FORWARD:
-  forward ();
- // delay(1000);
+  forward();
+  delay(1000);
   break;
   
   case BACKWARD:
-  reverse ();
- // delay(1000);
+  reverse();
+  delay(1000);
   break;
   
   case LEFT_TURN:
   ccw();
- // delay(1000);
+  delay(1000);
   break;
  
   case RIGHT_TURN:
   cw();
- // delay(1000);
+  delay(1000);
   break;
  
   case LEFT_ARC:
   strafe_left();
- // delay(1000);
+  delay(1000);
   break;
  
   case RIGHT_ARC:
   strafe_right();
-  //delay(1000);
+  delay(1000);
   break;
 
   case BACKWARD_LEFT_TURN:
   reverse_ccw();
-  //delay(1000);
+  delay(1000);
   break;
   }
 }
