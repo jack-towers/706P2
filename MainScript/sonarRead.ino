@@ -21,7 +21,7 @@ float sonarRead() {
     t2 = micros();
     pulse_width = t2 - t1;
     if (pulse_width > (MAX_DIST + 1000)) {
-      SerialCom->println("HC-SR04: NOT found");
+      Serial.println("HC-SR04: NOT found");
       return;
     }
   }
@@ -34,7 +34,7 @@ float sonarRead() {
     t2 = micros();
     pulse_width = t2 - t1;
     if (pulse_width > (MAX_DIST + 1000)) {
-      SerialCom->println("HC-SR04: Out of range");
+      Serial.println("HC-SR04: Out of range");
       return;
     }
   }

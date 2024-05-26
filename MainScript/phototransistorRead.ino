@@ -9,10 +9,31 @@ int sumAveragePast;
 int stop = 0;
 
 void phototransistorRead() {
-  ptLeftDist = analogRead(ptLeft);
-  ptMidLeftDist = analogRead(ptMidLeftDist);
-  ptMidRightDist = analogRead(ptMidRightDist);
-  ptRightDist = analogRead(ptRightDist);
+  
+ 
+
+ 
+
+  if (analogRead(ptLeft) < 10) {
+    ptLeftDist = 180;
+  }else{
+    ptLeftDist = 393.8*pow(analogRead(ptLeft), -0.448);
+  }
+  if (analogRead(ptMidLeft) < 10) {
+      ptMidLeftDist = 180;
+  }else{
+    ptMidLeftDist = 398.45*pow(analogRead(ptMidLeftDist),-0.449);
+  }
+  if (analogRead(ptMidRight) < 10) {
+    ptMidRightDist = 180;
+  }else{
+    ptMidRightDist = 369.85*pow(analogRead(ptMidRightDist),-0.44);
+  }
+  if (analogRead(ptRight) < 10) {
+    ptRightDist = 180;
+  }else{
+    ptRightDist = 417.25*pow(analogRead(ptRightDist),-0.438);
+  }
 }
 
 float phototransistorHone() {
@@ -34,11 +55,11 @@ float phototransistorHone() {
 
     if (turnDirection = 1) {
       ccw();
-      delay(500);
+      //delay(500);
       stop();
     } else {
       cw();
-      delay(500);
+     // delay(500);
       stop();
     }
 
