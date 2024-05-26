@@ -97,6 +97,7 @@ RIGHT_TURN,
 LEFT_ARC,
 RIGHT_ARC,
 BACKWARD_LEFT_TURN,
+STOP,
 };
 
 // declare function output and function flag
@@ -110,6 +111,8 @@ MOTION avoid_command;
 int avoid_output_flag;
 MOTION escape_command;
 int escape_output_flag;
+MOTION target_acquired_command;
+int target_acquired_flag;
 MOTION motor_input;
 
 String mode;
@@ -196,6 +199,8 @@ STATE running(){
   //BluetoothSerial.print("Current State: ");
   //BluetoothSerial.println(mode);
   escape();
+
+  targetAcquired();
   // select the output command based on the function priority 
   arbitrate();
   photo_left = 0; 
@@ -242,7 +247,7 @@ void cruise() {
     BluetoothSerial.print(ptMidRightDist);
     BluetoothSerial.print(" , ");
     BluetoothSerial.println(ptRightDist);
-  if ((ptLeftDist > 120) | (ptMidLeftDist > 120) | (ptMidRightDist > 120) | (ptRightDist > 120)) {
+  if (((ptLeftDist > 25) | (ptMidLeftDist > 25) | (ptMidRightDist > 25) | (ptRightDist > 25)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155) & (abs(ptRightDist - ptLeftDist) < 25))) {
     cruise_output_flag=1;
     BluetoothSerial.println("In Cruise");
   } else {
@@ -251,22 +256,26 @@ void cruise() {
 }
 
 // follow function output command and flag
+//Need to make turning more accurate
 void follow() {
   mode = "follow";
-  if ((ptLeftDist < 120) | (ptMidLeftDist < 120) | (ptMidRightDist < 120) | (ptRightDist < 120)) {
-    phototransistorRead();
+  phototransistorRead();
 
+  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 25)) {
+     BluetoothSerial.println("In Follow");
     if (ptRightDist > ptLeftDist) {
       follow_command=LEFT_TURN;
     }  else {
       follow_command=RIGHT_TURN;
     }
     follow_output_flag=1;
-    
+
   } else {
     follow_output_flag=0;
   }         
 }
+
+
 
 // avoid function output command and flag 
 void avoid() {
@@ -328,6 +337,22 @@ else
   escape_output_flag=0;   
 }
 
+void targetAcquired (){
+
+  if((ptLeftDist < 60) | (ptMidLeftDist < 35) | (ptMidRightDist < 35) | (ptRightDist < 60)){
+    target_acquired_flag = 1;
+    target_acquired_command = STOP;
+
+    fanRun();
+ }
+  else{
+    target_acquired_flag = 0;
+  }
+ 
+
+
+}
+
 // check flag and select command based on priority 
 void arbitrate () {
   if (search_output_flag==1)
@@ -340,6 +365,8 @@ void arbitrate () {
   {motor_input=avoid_command;}
   if (escape_output_flag==1)
   {motor_input=escape_command;}
+  if (target_acquired_flag==1)
+  {motor_input=target_acquired_command;}
   BluetoothSerial.print("Command is:");
   BluetoothSerial.println(motor_input);
   robotMove();                                    
