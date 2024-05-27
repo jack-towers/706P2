@@ -339,7 +339,7 @@ void escape() {
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
   bumper_check();
-  if(((ptLeftDist < 60) && (ptMidLeftDist < 20) && (ptMidRightDist < 20) && (ptRightDist < 60)) && (sonarRead() )){
+  if(((ptLeftDist < 60) && (ptMidLeftDist < 30) && (ptMidRightDist < 30) && (ptRightDist < 60)) && (sonarRead() < 10)){
     BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
