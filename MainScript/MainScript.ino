@@ -244,7 +244,7 @@ void cruise() {
     // BluetoothSerial.print(ptMidRightDist);
     // BluetoothSerial.print(" , ");
     // BluetoothSerial.println(ptRightDist);
-  if (((ptLeftDist > 60) | (ptMidLeftDist > 35) | (ptMidRightDist > 35) | (ptRightDist > 35)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155) & (abs(ptRightDist - ptLeftDist) < 25))) {
+  if (((ptLeftDist > 60) | (ptMidLeftDist > 35) | (ptMidRightDist > 35) | (ptRightDist > 35)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) < 25)) {
     cruise_output_flag=1;
     BluetoothSerial.println("In Cruise");
   } else {
@@ -266,7 +266,7 @@ void follow() {
   BluetoothSerial.println(ptRightDist);
   
   if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 15)) {
-    if (ptRightDist > ptLeftDist) {
+    if (ptMidRightDist > ptMidLeftDist) {
       BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
     }  else {
@@ -339,11 +339,11 @@ void escape() {
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
   bumper_check();
-  if(((ptLeftDist < 60) && (ptMidLeftDist < 35) && (ptMidRightDist < 35) && (ptRightDist < 60)) || bumper_frontProx){
+  if(((ptLeftDist < 60) && (ptMidLeftDist < 20) && (ptMidRightDist < 20) && (ptRightDist < 60)) && (sonarRead() )){
     BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
-    fanRun();
+    // fanRun();
   } else{
     target_acquired_flag = 0;
   }
