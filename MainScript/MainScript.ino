@@ -265,7 +265,7 @@ void follow() {
   BluetoothSerial.print(" , ");
   BluetoothSerial.println(ptRightDist);
   
-  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 15)) {
+  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 25)) {
     if (ptMidRightDist > ptMidLeftDist) {
       BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
@@ -339,8 +339,9 @@ void escape() {
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
   bumper_check();
-  if(((ptLeftDist < 60) && (ptMidLeftDist < 30) && (ptMidRightDist < 30) && (ptRightDist < 60)) && (sonarRead() < 10)){
+  if(((ptLeftDist < 60) && (ptMidLeftDist < 20) && (ptMidRightDist < 40) && (ptRightDist < 60)) && (sonarRead() < 7)){
     BluetoothSerial.println("STOPPED");
+    BluetoothSerial.println(sonarRead());
     target_acquired_flag = 1;
     target_acquired_command = STOP;
     // fanRun();
