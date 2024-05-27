@@ -1,20 +1,3 @@
-//Front Right
-//ir_Unamed_short
-int IR_front_right = A10;
-
-//Back Right
-//ir_Y_short
-int IR_side_right = A11;
-
-//Front Left
-//ir_A_Long
-int IR_front_left = A8;
-
-//Back left
-//ir_B_Long
-int IR_side_left = A9;
-
-
 float* irRead() {
 
   int previous_front_right = 0;

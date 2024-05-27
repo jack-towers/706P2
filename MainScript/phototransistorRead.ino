@@ -9,11 +9,6 @@ int sumAveragePast;
 int stopit = 0;
 
 void phototransistorRead() {
-  
- 
-
- 
-
   if (analogRead(ptLeft) < 15) {
     ptLeftDist = 180;
   }else{

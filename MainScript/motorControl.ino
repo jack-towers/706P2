@@ -46,6 +46,11 @@ switch(motor_input)
   delay(100);
   break;
 
+  case BACKWARD_RIGHT_TURN:
+  reverse_cw();
+  delay(100);
+  break;
+
   case STOP:
   BluetoothSerial.println("Motor Stop Start");
   stop();
@@ -128,13 +133,25 @@ void reverse_ccw()
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  //delay(500);
+  delay(500);
   left_front_motor.writeMicroseconds(1500 - speed_val);
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 - speed_val);
   right_front_motor.writeMicroseconds(1500 - speed_val);
 }
 
+void reverse_cw()
+{
+  left_front_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+  delay(500);
+  left_front_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_front_motor.writeMicroseconds(1500 + speed_val);
+}
 
 
 
