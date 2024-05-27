@@ -199,7 +199,6 @@ STATE running(){
   //BluetoothSerial.print("Current State: ");
   //BluetoothSerial.println(mode);
   escape();
-
   targetAcquired();
   // select the output command based on the function priority 
   arbitrate();
@@ -337,8 +336,11 @@ void escape() {
   }
 }
 
-void targetAcquired (){
-  if((ptLeftDist < 50) & (ptMidLeftDist < 30) & (ptMidRightDist < 50) & (ptRightDist < 60)){
+void targetAcquired(){
+  //NEEDS TO BE AN AND WHEN CENTERING WORKS
+  bumper_check();
+  if(((ptLeftDist < 60) && (ptMidLeftDist < 35) && (ptMidRightDist < 35) && (ptRightDist < 60)) || bumper_frontProx){
+    BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
     fanRun();
