@@ -13,22 +13,22 @@ void phototransistorRead() {
 
  
 
-  if (analogRead(ptLeft) < 10) {
+  if (analogRead(ptLeft) < 15) {
     ptLeftDist = 180;
   }else{
     ptLeftDist = 393.8*pow(analogRead(ptLeft), -0.448);
   }
-  if (analogRead(ptMidLeft) < 10) {
+  if (analogRead(ptMidLeft) < 15) {
       ptMidLeftDist = 180;
   }else{
     ptMidLeftDist = 398.45*pow(analogRead(ptMidLeftDist),-0.449);
   }
-  if (analogRead(ptMidRight) < 10) {
+  if (analogRead(ptMidRight) < 15) {
     ptMidRightDist = 180;
   }else{
     ptMidRightDist = 369.85*pow(analogRead(ptMidRightDist),-0.44);
   }
-  if (analogRead(ptRight) < 10) {
+  if (analogRead(ptRight) < 15) {
     ptRightDist = 180;
   }else{
     ptRightDist = 417.25*pow(analogRead(ptRightDist),-0.438);
