@@ -246,7 +246,7 @@ void cruise() {
     BluetoothSerial.print(ptMidRightDist);
     BluetoothSerial.print(" , ");
     BluetoothSerial.println(ptRightDist);
-  if (((ptLeftDist > 25) | (ptMidLeftDist > 25) | (ptMidRightDist > 25) | (ptRightDist > 25)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155) & (abs(ptRightDist - ptLeftDist) < 25))) {
+  if (((ptLeftDist > 25) | (ptMidLeftDist > 25) | (ptMidRightDist > 25) | (ptRightDist > 25)) & ((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) < 25)) {
     cruise_output_flag=1;
     BluetoothSerial.println("In Cruise");
   } else {
@@ -260,9 +260,9 @@ void follow() {
   mode = "follow";
   phototransistorRead();
 
-  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptRightDist - ptLeftDist) > 25)) {
+  if (((ptLeftDist < 155) | (ptMidLeftDist < 155) | (ptMidRightDist < 155) | (ptRightDist < 155)) & (abs(ptMidRightDist - ptMidLeftDist) > 25)) {
      BluetoothSerial.println("In Follow");
-    if (ptRightDist > ptLeftDist) {
+    if (ptMidRightDist > ptMidLeftDist) {
       follow_command=LEFT_TURN;
     }  else {
       follow_command=RIGHT_TURN;
