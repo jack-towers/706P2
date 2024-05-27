@@ -1,5 +1,5 @@
 void fanRun() {
   digitalWrite(FAN_PIN, HIGH);
-  delay(5000);
+  delay(2000);
   digitalWrite(FAN_PIN, LOW);
 }
