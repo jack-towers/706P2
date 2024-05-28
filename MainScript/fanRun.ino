@@ -1,5 +1,5 @@
 void fanRun() {
-  while (((ptLeftDist < 80) || (ptMidLeftDist < 80) || (ptMidRightDist < 80) || (ptRightDist < 80))) {
+  while (((ptLeftDist < 50) || (ptMidLeftDist < 50) || (ptMidRightDist < 50) || (ptRightDist < 50))) {
     phototransistorRead();
     BluetoothSerial.print(ptLeftDist);
     BluetoothSerial.print(" , ");

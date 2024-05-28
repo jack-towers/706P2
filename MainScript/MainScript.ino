@@ -284,7 +284,7 @@ void follow() {
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
   
-  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptRightDist - ptLeftDist) > 18)) {
+  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptMidRightDist - ptMidLeftDist) > 10)) {
     if (ptMidRightDist > ptMidLeftDist) {
       BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
@@ -306,12 +306,12 @@ void avoid() {
      bumper_check_avoid();
    if (bumper_frontProx) {
      BluetoothSerial.println("Object In Front: Avoid");  
-     if (ptMidRightDist > ptMidLeftDist) {
+     if (ptMidRightDist < ptMidLeftDist) {
        avoid_output_flag=1;
-       avoid_command=RIGHT_ARC;
+       avoid_command=LEFT_ARC;
       } else {
        avoid_output_flag=1;
-       avoid_command= LEFT_ARC;
+       avoid_command= RIGHT_ARC;
       }
    } else 
   if (bumper_leftProx) {
