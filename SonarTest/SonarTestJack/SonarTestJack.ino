@@ -1,9 +1,18 @@
 /* Example code for HC-SR04 ultrasonic distance sensor with Arduino. 
    No library required. More info: https://www.makerguides.com */
+   
+#include <SoftwareSerial.h>
 
 // Define Trig and Echo pin:
 #define trigPin A3
 #define echoPin A1
+
+// Serial Data input pin
+#define BLUETOOTH_RX 8
+// Serial Data output pin
+#define BLUETOOTH_TX 9
+
+SoftwareSerial BluetoothSerial(BLUETOOTH_RX, BLUETOOTH_TX);
 
 // Define variables:
 long duration;
@@ -15,7 +24,7 @@ void setup() {
   pinMode(echoPin, INPUT);
 
   //Begin Serial communication at a baudrate of 9600:
-  Serial.begin(9600);
+  BluetoothSerial.begin(115200);
 }
 
 void loop() {
@@ -34,9 +43,9 @@ void loop() {
   distance = duration * 0.034 / 2;
 
   // Print the distance on the Serial Monitor (Ctrl+Shift+M):
-  Serial.print("Distance = ");
-  Serial.print(distance);
-  Serial.println(" cm");
+  BluetoothSerial.print("Distance = ");
+  BluetoothSerial.print(distance);
+  BluetoothSerial.println(" cm");
 
   delay(50);
 }

@@ -11,7 +11,7 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 const byte fan_servo = 45;
 Servo fan_servo_motor; 
 
-int speed_val = 100;
+int speed_val = 150;
 int speed_change;
 
 //Phototransistor initialisations
@@ -284,12 +284,12 @@ void follow() {
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
   
-  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptRightDist - ptLeftDist) > 15)) {
+  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptRightDist - ptLeftDist) > 18)) {
     if (ptMidRightDist > ptMidLeftDist) {
-      // BluetoothSerial.println("Follow Left");
+      BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
     }  else {
-      // BluetoothSerial.println("Follow Right");
+      BluetoothSerial.println("Follow Right");
       follow_command=RIGHT_TURN;
     }
     follow_output_flag=1;
@@ -303,18 +303,17 @@ void follow() {
 // avoid function output command and flag 
 void avoid() {
     mode = "avoid";
-    bumper_check_avoid();
-  // if (bumper_frontProx) {
-  //   escape_output_flag=1;
-  //   BluetoothSerial.println("Object in front");  
-  //   if (ptMidRightDist > ptMidLeftDist) {
-  //     avoid_output_flag=1;
-  //     avoid_command=RIGHT_ARC;
-  //   } else {
-  //     avoid_output_flag=1;
-  //     avoid_command= LEFT_ARC;
-  //   }
-  // } else 
+     bumper_check_avoid();
+   if (bumper_frontProx) {
+     BluetoothSerial.println("Object In Front: Avoid");  
+     if (ptMidRightDist > ptMidLeftDist) {
+       avoid_output_flag=1;
+       avoid_command=RIGHT_ARC;
+      } else {
+       avoid_output_flag=1;
+       avoid_command= LEFT_ARC;
+      }
+   } else 
   if (bumper_leftProx) {
     avoid_output_flag=1;
     avoid_command= RIGHT_ARC;
@@ -325,13 +324,13 @@ void avoid() {
     BluetoothSerial.println("Object On Right: Avoid");
   } else if (bumper_frontrightProx) { 
     avoid_output_flag=1;
-    avoid_command= DIAG_LEFT;
+    avoid_command= LEFT_ARC;
     BluetoothSerial.println("Object Front Right: Avoid");
   }
   //SHOULD THERE BE A BACKWARD RIGHT TURN???
   else if (bumper_frontleftProx) {
     avoid_output_flag=1;
-    avoid_command= DIAG_RIGHT;
+    avoid_command= RIGHT_ARC;
     BluetoothSerial.println("Object Front Left: Avoid");
   } else {
     BluetoothSerial.println("Clear: Avoid");
@@ -362,13 +361,13 @@ void escape() {
   } else if (bumper_frontrightProx) { 
     escape_output_flag=1;
     BluetoothSerial.println("Object Front Right: Escape");
-    escape_command=BACKWARD_LEFT_TURN;
+    escape_command=DIAG_LEFT;
   }
   //SHOULD THERE BE A BACKWARD RIGHT TURN???
   else if (bumper_frontleftProx) {
     escape_output_flag=1;
     BluetoothSerial.println("Object Front Left: Escape");
-    escape_command=BACKWARD_RIGHT_TURN;
+    escape_command=DIAG_RIGHT;
   } else {
     BluetoothSerial.println("Clear: Escape");
     escape_output_flag=0;   
@@ -377,6 +376,9 @@ void escape() {
 
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
+  BluetoothSerial.println(sonarRead());
+
+  phototransistorRead();
   BluetoothSerial.print(ptLeftDist);
   BluetoothSerial.print(" , ");
   BluetoothSerial.print(ptMidLeftDist);
@@ -384,9 +386,9 @@ void targetAcquired(){
   BluetoothSerial.print(ptMidRightDist);
   BluetoothSerial.print(" , ");
   BluetoothSerial.println(ptRightDist);
-  if(((ptLeftDist < 35) && (ptMidLeftDist < 20) && (ptMidRightDist < 35) && (ptRightDist < 50)) && (sonarRead() < 4)){
+
+  if(((ptLeftDist < 55) && (ptMidLeftDist < 20) && (ptMidRightDist < 45) && (ptRightDist < 55)) && ((sonarRead() <= 10) || (sonarRead() >= 35))){
     BluetoothSerial.println("STOPPED");
-    BluetoothSerial.println(sonarRead());
     target_acquired_flag = 1;
     target_acquired_command = STOP;
     // fanRun();
@@ -421,7 +423,7 @@ void bumper_check_avoid(){
   // Allocate array to hold current sensor values
 
   float* current_sensors = irRead();
-  if (analogRead(IR_front_right) > 600){
+  if (analogRead(IR_front_right) > 400){
     BluetoothSerial.print("Distance Front Right: ");
     BluetoothSerial.println(analogRead(IR_front_right));
     bumper_frontrightProx = true;
@@ -429,7 +431,7 @@ void bumper_check_avoid(){
     bumper_frontrightProx = false;    
   }
 
-  if(analogRead(IR_front_left) > 600){
+  if(analogRead(IR_front_left) > 400){
     BluetoothSerial.print("Distance front left: ");
     BluetoothSerial.println(analogRead(IR_front_left));
     bumper_frontleftProx = true;
@@ -453,20 +455,20 @@ void bumper_check_avoid(){
     bumper_rightProx = false;
   }
 
-  // int front_detect = sonarRead();
-  // if(front_detect < 7){
-  //   bumper_frontProx = true; 
-  //   BluetoothSerial.print("Distance: "); 
-  //   BluetoothSerial.println(front_detect);
-  // }else{
-  //   bumper_frontProx = false;
-  // }
+  int front_detect = sonarRead();
+  if(((ptLeftDist > 80) && (ptMidLeftDist > 80) && (ptMidRightDist > 80) && (ptRightDist > 80)) && (front_detect <= 20)){
+    bumper_frontProx = true; 
+    BluetoothSerial.print("Avoid Distance: "); 
+    BluetoothSerial.println(front_detect);
+  }else{
+    bumper_frontProx = false;
+  }
 }
 
 void bumper_check_escape(){
   // Allocate array to hold current sensor values
   float* current_sensors = irRead();
-  if (analogRead(IR_front_right) > 700){
+  if (analogRead(IR_front_right) > 750){
     BluetoothSerial.print("Distance Front Right: ");
     BluetoothSerial.println(analogRead(IR_front_right));
     bumper_frontrightProx = true;
@@ -474,7 +476,7 @@ void bumper_check_escape(){
     bumper_frontrightProx = false;    
   }
 
-  if(analogRead(IR_front_left) > 700){
+  if(analogRead(IR_front_left) > 750){
     BluetoothSerial.print("Distance front left: ");
     BluetoothSerial.println(analogRead(IR_front_left));
     bumper_frontleftProx = true;
@@ -482,7 +484,7 @@ void bumper_check_escape(){
     bumper_frontleftProx = false;
   }
 
-  if(analogRead(IR_side_left) > 700){
+  if(analogRead(IR_side_left) > 750){
     BluetoothSerial.print("Distance Left: ");
     BluetoothSerial.println(analogRead(IR_side_left));
     bumper_leftProx = true;
@@ -490,7 +492,7 @@ void bumper_check_escape(){
     bumper_leftProx = false;
   }
 
-  if(analogRead(IR_side_right) > 700){
+  if(analogRead(IR_side_right) > 750){
     BluetoothSerial.print("Distance Right: ");
     BluetoothSerial.println(analogRead(IR_side_right));
     bumper_rightProx = true;
@@ -499,9 +501,9 @@ void bumper_check_escape(){
   }
 
   int front_detect = sonarRead();
-  if(front_detect < 4){
+  if(((ptLeftDist > 40) && (ptMidLeftDist > 20) && (ptMidRightDist > 40) && (ptRightDist > 50)) && (front_detect <= 10)) {
     bumper_frontProx = true; 
-    BluetoothSerial.print("Distance: "); 
+    BluetoothSerial.print("Escape Distance: "); 
     BluetoothSerial.println(front_detect);
   }else{
     bumper_frontProx = false;
