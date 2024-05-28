@@ -9,22 +9,22 @@ int sumAveragePast;
 int stopit = 0;
 
 void phototransistorRead() {
-  if (analogRead(ptLeft) < 15) {
+  if (analogRead(ptLeft) < 5) {
     ptLeftDist = 180;
   }else{
     ptLeftDist = 393.8*pow(analogRead(ptLeft), -0.448);
   }
-  if (analogRead(ptMidLeft) < 15) {
+  if (analogRead(ptMidLeft) < 5) {
       ptMidLeftDist = 180;
   }else{
     ptMidLeftDist = 398.45*pow(analogRead(ptMidLeft),-0.449);
   }
-  if (analogRead(ptMidRight) < 15) {
+  if (analogRead(ptMidRight) < 5) {
     ptMidRightDist = 180;
   }else{
     ptMidRightDist = 369.85*pow(analogRead(ptMidRight),-0.44);
   }
-  if (analogRead(ptRight) < 15) {
+  if (analogRead(ptRight) < 5) {
     ptRightDist = 180;
   }else{
     ptRightDist = 417.25*pow(analogRead(ptRight),-0.438);
