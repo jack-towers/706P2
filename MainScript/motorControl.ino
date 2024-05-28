@@ -97,7 +97,6 @@ void stop(){                                                                // s
   left_rear_motor.writeMicroseconds(1500);
   right_rear_motor.writeMicroseconds(1500);
   right_front_motor.writeMicroseconds(1500);
-  disable_motors();
 }
 void forward(){                                                         // moving forward  
   left_front_motor.writeMicroseconds(1500 + speed_val);

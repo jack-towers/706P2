@@ -43,7 +43,7 @@ bool bumper_frontleftProx,bumper_frontrightProx, bumper_leftProx,bumper_rightPro
 
 // define threshold of phototransistor  difference 
 int photo_dead_zone = 5;
-
+int turningRange;
 //Default ultrasonic ranging sensor pins, these pins are defined my the Shield
 const int TRIG_PIN = A3;
 const int ECHO_PIN = A1;
@@ -96,7 +96,7 @@ float X = 0;
 float Y = 0;
 float PHI = 0;
 
-
+int gotBlown = 0;
 // three machine states 
 enum STATE {
   INITIALISING,
@@ -283,8 +283,13 @@ void follow() {
   // BluetoothSerial.print(ptMidRightDist);
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
+  if((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 80){
+    turningRange = 25;
+  }else{
+    turningRange = 25;
+  }
   
-  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs((ptMidRightDist - 10) - ptMidLeftDist) > 15)) {
+  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs((ptMidRightDist - ptMidLeftDist) > turningRange))) {
     if (ptMidRightDist > ptMidLeftDist) {
       BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
@@ -381,7 +386,7 @@ void escape() {
 
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
-  BluetoothSerial.println(sonarRead());
+  //BluetoothSerial.println(sonarRead());
 
   phototransistorRead();
   BluetoothSerial.print(ptLeftDist);
@@ -396,7 +401,8 @@ void targetAcquired(){
     BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
-    // fanRun();
+     //fanRun();
+     gotBlown += 1;
   } else{
     target_acquired_flag = 0;
   }
@@ -428,6 +434,8 @@ void bumper_check_avoid(){
   // Allocate array to hold current sensor values
 
   float* current_sensors = irRead();
+  int front_detect = sonarRead();
+
   if (analogRead(IR_front_right) > 400){
     BluetoothSerial.print("Distance Front Right: ");
     BluetoothSerial.println(analogRead(IR_front_right));
@@ -460,7 +468,7 @@ void bumper_check_avoid(){
     bumper_rightProx = false;
   }
 
-  int front_detect = sonarRead();
+  
   if(((ptLeftDist > 80) && (ptMidLeftDist > 80) && (ptMidRightDist > 80) && (ptRightDist > 80)) && (front_detect <= 20)){
     bumper_frontProx = true; 
     BluetoothSerial.print("Avoid Distance: "); 
@@ -473,6 +481,8 @@ void bumper_check_avoid(){
 void bumper_check_escape(){
   // Allocate array to hold current sensor values
   float* current_sensors = irRead();
+  int front_detect = sonarRead();
+
   if (analogRead(IR_front_right) > 750){
     BluetoothSerial.print("Distance Front Right: ");
     BluetoothSerial.println(analogRead(IR_front_right));
@@ -505,7 +515,7 @@ void bumper_check_escape(){
     bumper_rightProx = false;
   }
 
-  int front_detect = sonarRead();
+  
   if(((ptLeftDist > 40) && (ptMidLeftDist > 20) && (ptMidRightDist > 40) && (ptRightDist > 50)) && (front_detect <= 10)) {
     bumper_frontProx = true; 
     BluetoothSerial.print("Escape Distance: "); 
