@@ -318,23 +318,23 @@ void avoid() {
   if (bumper_leftProx) {
     avoid_output_flag=1;
     avoid_command= RIGHT_ARC;
-    BluetoothSerial.println("Object on left");
+    BluetoothSerial.println("Object On Left: Avoid");
   } else if (bumper_rightProx) {
     avoid_output_flag=1;
     avoid_command= LEFT_ARC;
-    BluetoothSerial.println("Object on right");
+    BluetoothSerial.println("Object On Right: Avoid");
   } else if (bumper_frontrightProx) { 
     avoid_output_flag=1;
     avoid_command= DIAG_LEFT;
-    BluetoothSerial.println("Object on front right");
+    BluetoothSerial.println("Object Front Right: Avoid");
   }
   //SHOULD THERE BE A BACKWARD RIGHT TURN???
   else if (bumper_frontleftProx) {
     avoid_output_flag=1;
     avoid_command= DIAG_RIGHT;
-    BluetoothSerial.println("Object on front left");
+    BluetoothSerial.println("Object Front Left: Avoid");
   } else {
-    BluetoothSerial.println("Clear");
+    BluetoothSerial.println("Clear: Avoid");
     avoid_output_flag=0;   
   }
 }
@@ -349,35 +349,42 @@ void escape() {
   bumper_check_escape();
   if (bumper_frontProx) {
     escape_output_flag=1;
-    BluetoothSerial.println("Object in front");  
+    BluetoothSerial.println("Object In Front: Escape");  
     escape_command=BACKWARD;
   } else if (bumper_leftProx) {
     escape_output_flag=1;
-    BluetoothSerial.println("Object on left");
+    BluetoothSerial.println("Object On Left: Escape");
     escape_command=RIGHT_ARC;
   } else if (bumper_rightProx) {
     escape_output_flag=1;
-    BluetoothSerial.println("Object on right");
+    BluetoothSerial.println("Object Right: Escape");
     escape_command=LEFT_ARC;
   } else if (bumper_frontrightProx) { 
     escape_output_flag=1;
-    BluetoothSerial.println("Object on front right");
+    BluetoothSerial.println("Object Front Right: Escape");
     escape_command=BACKWARD_LEFT_TURN;
   }
   //SHOULD THERE BE A BACKWARD RIGHT TURN???
   else if (bumper_frontleftProx) {
     escape_output_flag=1;
-    BluetoothSerial.println("Object on front left");
+    BluetoothSerial.println("Object Front Left: Escape");
     escape_command=BACKWARD_RIGHT_TURN;
   } else {
-    BluetoothSerial.println("Clear");
+    BluetoothSerial.println("Clear: Escape");
     escape_output_flag=0;   
   }
 }
 
 void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
-  if(((ptLeftDist < 60) && (ptMidLeftDist < 30) && (ptMidRightDist < 30) && (ptRightDist < 60)) && (sonarRead() < 5)){
+  BluetoothSerial.print(ptLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidRightDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.println(ptRightDist);
+  if(((ptLeftDist < 35) && (ptMidLeftDist < 20) && (ptMidRightDist < 35) && (ptRightDist < 50)) && (sonarRead() < 4)){
     BluetoothSerial.println("STOPPED");
     BluetoothSerial.println(sonarRead());
     target_acquired_flag = 1;
@@ -492,7 +499,7 @@ void bumper_check_escape(){
   }
 
   int front_detect = sonarRead();
-  if(front_detect < 5){
+  if(front_detect < 4){
     bumper_frontProx = true; 
     BluetoothSerial.print("Distance: "); 
     BluetoothSerial.println(front_detect);
