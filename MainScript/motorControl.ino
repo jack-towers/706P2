@@ -11,24 +11,24 @@ switch(motor_input)
 {
   case FORWARD:
   forward();
-  delay(100);
+  delay(20);
   break;
   
   case BACKWARD:
   reverse();
-  delay(100);
+  delay(20);
   break;
   
   case LEFT_TURN:
   ccw();
-  BluetoothSerial.println("Motor Left");
-  delay(100);
+  // BluetoothSerial.println("Motor Left");
+  delay(20);
   break;
  
   case RIGHT_TURN:
   cw();
-  BluetoothSerial.println("Motor Right");
-  delay(100);
+  // BluetoothSerial.println("Motor Right");
+  delay(20);
   break;
  
   case LEFT_ARC:

@@ -265,7 +265,7 @@ void cruise() {
     // BluetoothSerial.println(ptRightDist);
   if (((ptLeftDist > 60) | (ptMidLeftDist > 35) | (ptMidRightDist > 35) | (ptRightDist > 35)) & ((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptRightDist - ptLeftDist) < 25)) {
     cruise_output_flag=1;
-    BluetoothSerial.println("In Cruise");
+    // BluetoothSerial.println("In Cruise");
   } else {
     cruise_output_flag=0;
   }
@@ -276,20 +276,20 @@ void cruise() {
 void follow() {
   mode = "follow";
   phototransistorRead();
-  BluetoothSerial.print(ptLeftDist);
-  BluetoothSerial.print(" , ");
-  BluetoothSerial.print(ptMidLeftDist);
-  BluetoothSerial.print(" , ");
-  BluetoothSerial.print(ptMidRightDist);
-  BluetoothSerial.print(" , ");
-  BluetoothSerial.println(ptRightDist);
+  // BluetoothSerial.print(ptLeftDist);
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.print(ptMidLeftDist);
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.print(ptMidRightDist);
+  // BluetoothSerial.print(" , ");
+  // BluetoothSerial.println(ptRightDist);
   
   if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptRightDist - ptLeftDist) > 15)) {
     if (ptMidRightDist > ptMidLeftDist) {
-      BluetoothSerial.println("Follow Left");
+      // BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
     }  else {
-      BluetoothSerial.println("Follow Right");
+      // BluetoothSerial.println("Follow Right");
       follow_command=RIGHT_TURN;
     }
     follow_output_flag=1;
@@ -402,8 +402,8 @@ void arbitrate () {
   {motor_input=escape_command;}
   if(target_acquired_flag==1)
   {motor_input=target_acquired_command;}
-  BluetoothSerial.print("Command is:");
-  BluetoothSerial.println(motor_input);
+  // BluetoothSerial.print("Command is:");
+  // BluetoothSerial.println(motor_input);
   robotMove();                                    
 }
 
