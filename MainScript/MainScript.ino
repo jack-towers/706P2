@@ -284,7 +284,7 @@ void follow() {
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
   
-  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs(ptMidRightDist - ptMidLeftDist) > 15)) {
+  if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs((ptMidRightDist - 10) - ptMidLeftDist) > 15)) {
     if (ptMidRightDist > ptMidLeftDist) {
       BluetoothSerial.println("Follow Left");
       follow_command=LEFT_TURN;
