@@ -1,19 +1,18 @@
 #include <SoftwareSerial.h>
 
 // Serial Data input pin
-#define BLUETOOTH_RX 10
+#define BLUETOOTH_RX 8
 // Serial Data output pin
-#define BLUETOOTH_TX 11
+#define BLUETOOTH_TX 9
 
 SoftwareSerial BluetoothSerial(BLUETOOTH_RX, BLUETOOTH_TX);
 
 //Front Right
 //ir_B_LONG
-int OrangeRed = A12;
-int Black = A13;
-int GreenYellow = A14;
-int Blue = A15;
-float ptMidLeftDist = 0;
+int ptLeft= A12;
+int ptMidLeft = A13;
+int ptMidRight = A14;
+int ptRight = A15;
 
 void setup() {
 // put your setup code here, to run once:
@@ -22,18 +21,14 @@ void setup() {
 }
 
 void loop() {
-  // BluetoothSerial.print((analogRead(OrangeRed)));
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.print((analogRead(Black)));
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.print((analogRead(GreenYellow)));
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.println((analogRead(Blue)));
 
-  BluetoothSerial.print((analogRead(Black)));
+  BluetoothSerial.print(393.8*pow(analogRead(ptLeft), -0.448));
   BluetoothSerial.print(" , ");
-  ptMidLeftDist = 398.45*pow(analogRead(A13)+1,-0.449);
-  BluetoothSerial.println(ptMidLeftDist);
+  BluetoothSerial.print(398.45*pow(analogRead(ptMidLeft),-0.449));
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(369.85*pow(analogRead(ptMidRight),-0.44));
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.println(417.25*pow(analogRead(ptRight),-0.438));
 
   delay(500);
 }

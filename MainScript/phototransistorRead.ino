@@ -6,21 +6,29 @@ int sumPast4 = 0;
 int sumPast5 = 0;
 int sumAverage;
 int sumAveragePast;
+int stopit = 0;
 
 void phototransistorRead() {
-  // ptLeftDist = analogRead(ptLeft);
-  // ptMidLeftDist = analogRead(ptMidLeft);
-  // ptMidRightDist = analogRead(ptMidRight);
-  // ptRightDist = analogRead(ptRight);
-  ptLeftDist = 100 - (393.8*pow(analogRead(ptLeft)+1, -0.448))/180 * 100;
-  ptMidLeftDist = 398.45*pow(analogRead(ptMidLeftDist)+1,-0.449);
-  ptMidRightDist = 100 - (369.85*pow(analogRead(ptMidRightDist)+1,-0.44))/180 * 100;
-  ptRightDist = 100 - (417.25*pow(analogRead(ptRightDist)+1,-0.438))/180 * 100;
-  // BluetoothSerial.println(ptLeftDist);
-  BluetoothSerial.println(ptMidLeftDist);
-  delay(100);
-  // BluetoothSerial.println(ptMidRightDist);
-  // BluetoothSerial.println(ptRightDist);
+  if (analogRead(ptLeft) < 5) {
+    ptLeftDist = 180;
+  }else{
+    ptLeftDist = 393.8*pow(analogRead(ptLeft), -0.448);
+  }
+  if (analogRead(ptMidLeft) < 5) {
+      ptMidLeftDist = 180;
+  }else{
+    ptMidLeftDist = 398.45*pow(analogRead(ptMidLeft),-0.449);
+  }
+  if (analogRead(ptMidRight) < 5) {
+    ptMidRightDist = 180;
+  }else{
+    ptMidRightDist = 369.85*pow(analogRead(ptMidRight),-0.44);
+  }
+  if (analogRead(ptRight) < 5) {
+    ptRightDist = 180;
+  }else{
+    ptRightDist = 417.25*pow(analogRead(ptRight),-0.438);
+  }
 }
 
 float phototransistorHone() {
@@ -36,17 +44,17 @@ float phototransistorHone() {
 
   while (sumAverage > sumAveragePast) {
 
-    if (stop == 0) {
+    if (stopit == 0) {
       honeServo();
     }
 
     if (turnDirection = 1) {
       ccw();
-      delay(500);
+      //delay(500);
       stop();
     } else {
       cw();
-      delay(500);
+     // delay(500);
       stop();
     }
 
