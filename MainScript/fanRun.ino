@@ -18,11 +18,11 @@ void fanRun() {
  
   
   digitalWrite(FAN_PIN, LOW);
-  
+  BluetoothSerial.print("Fan Off");
 
   if(gotBlown == 2){
-     BluetoothSerial.print("Finished?? ");
-   delay(1000000000);
+    BluetoothSerial.print("Donezo");
+    delay(1000000000);
  }
 }
 //}

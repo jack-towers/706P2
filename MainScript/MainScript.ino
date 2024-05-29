@@ -11,7 +11,7 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 const byte fan_servo = 45;
 Servo fan_servo_motor; 
 
-int speed_val = 200;
+int speed_val = 225;
 int speed_change;
 
 //Phototransistor initialisations
@@ -389,8 +389,8 @@ void targetAcquired(){
   // BluetoothSerial.print(ptMidRightDist);
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
-
-  if(((ptMidLeftDist + ptMidRightDist)/2) < 18){
+  BluetoothSerial.println(sonarRead());
+  if((((ptMidLeftDist + ptMidRightDist)/2) < 18) && ((sonarRead() <= 7.3) || (sonarRead() >= 35))){ 
     // BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
