@@ -11,63 +11,63 @@ switch(motor_input)
 {
   case FORWARD:
   forward();
-  delay(20);
+  delay(8);
   break;
   
   case BACKWARD:
-  reverse(30);
+  reverse(12);
   break;
   
   case LEFT_TURN:
   ccw();
   // BluetoothSerial.println("Motor Left");
-  delay(5);
+  delay(3);
   break;
  
   case RIGHT_TURN:
   cw();
   // BluetoothSerial.println("Motor Right");
-  delay(5);
+  delay(3);
   break;
  
   case LEFT_ARC:
   strafe_left();
-  delay(100);
+  delay(40);
   break;
  
   case LEFT_ARC_DELAYED:
   strafe_left();
-  delay(350);
+  delay(140);
   break;
  
   case RIGHT_ARC:
   strafe_right();
-  delay(100);
+  delay(40);
   break;
 
   case RIGHT_ARC_DELAYED:
   strafe_right();
-  delay(350);
+  delay(140);
   break;
 
   case BACKWARD_LEFT_TURN:
   reverse_ccw();
-  delay(100);
+  delay(40);
   break;
 
   case BACKWARD_RIGHT_TURN:
   reverse_cw();
-  delay(100);
+  delay(40);
   break;
 
   case DIAG_LEFT:
   diagonal_left();
-  delay(100);
+  delay(40);
   break;
 
   case DIAG_RIGHT:
   diagonal_right();
-  delay(100);
+  delay(40);
   break;
 
   case STOP:
@@ -77,7 +77,7 @@ switch(motor_input)
   BluetoothSerial.println("Motor Stop End");
   fanRun();
   enable_motors();
-  reverse(500);
+  reverse(220);
   break;
   }
 }
@@ -156,12 +156,12 @@ void reverse_ccw()
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  delay(500);
+  delay(220);
   left_front_motor.writeMicroseconds(1500 - speed_val);
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 - speed_val);
   right_front_motor.writeMicroseconds(1500 - speed_val);
-  delay(500);
+  delay(220);
 }
 
 void reverse_cw()
@@ -170,12 +170,12 @@ void reverse_cw()
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  delay(500);
+  delay(220);
   left_front_motor.writeMicroseconds(1500 + speed_val);
   left_rear_motor.writeMicroseconds(1500 + speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  delay(500);
+  delay(220);
 }
 
 void diagonal_left() {
@@ -183,7 +183,7 @@ void diagonal_left() {
   left_rear_motor.writeMicroseconds(1500 + speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
   right_front_motor.writeMicroseconds(1500 - speed_val);
-  delay(500);
+  delay(220);
   left_front_motor.writeMicroseconds(1500 - speed_val);
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
@@ -195,7 +195,7 @@ void diagonal_right() {
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 - speed_val);
   right_front_motor.writeMicroseconds(1500 + speed_val);
-  delay(500);
+  delay(220);
   left_front_motor.writeMicroseconds(1500 - speed_val);
   left_rear_motor.writeMicroseconds(1500 - speed_val);
   right_rear_motor.writeMicroseconds(1500 + speed_val);
