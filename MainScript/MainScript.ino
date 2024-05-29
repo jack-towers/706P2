@@ -389,7 +389,7 @@ void targetAcquired(){
   // BluetoothSerial.print(ptMidRightDist);
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
-  BluetoothSerial.println(sonarRead());
+  // BluetoothSerial.println(sonarRead());
   if(((ptMidLeftDist + ptMidRightDist)/2) < 18){ 
     // BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
