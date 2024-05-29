@@ -422,7 +422,7 @@ void targetAcquired(){
   BluetoothSerial.print(" , ");
   BluetoothSerial.println(ptRightDist);
 
-  if(((ptLeftDist < 55) && (ptMidLeftDist < 20) && (ptMidRightDist < 45) && (ptRightDist < 55)) && ((sonarRead() <= 10) || (sonarRead() >= 35))){
+  if((ptMidLeftDist < 20) && (ptMidRightDist < 45)){
     BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
