@@ -390,12 +390,16 @@ void targetAcquired(){
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
   BluetoothSerial.println(sonarRead());
-  if((((ptMidLeftDist + ptMidRightDist)/2) < 18) && ((sonarRead() <= 7.3) || (sonarRead() >= 35))){ 
+  if(((ptMidLeftDist + ptMidRightDist)/2) < 18){ 
     // BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
-    target_acquired_command = STOP;
+    if ((sonarRead() <= 7.5) || (sonarRead() >= 35)) {
+      target_acquired_command = STOP;
+      gotBlown += 1;
+    } else {
+      target_acquired_command = FORWARD;
+    }
      //fanRun();
-     gotBlown += 1;
   } else{
     target_acquired_flag = 0;
   }

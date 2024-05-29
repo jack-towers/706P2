@@ -11,7 +11,7 @@ switch(motor_input)
 {
   case FORWARD:
   forward();
-  delay(30);
+  delay(20);
   break;
   
   case BACKWARD:
@@ -108,7 +108,7 @@ void stop(){                                                                // s
   right_rear_motor.writeMicroseconds(1500);
   right_front_motor.writeMicroseconds(1500);
 
-  delay(100);
+  delay(150);
   disable_motors();
 }
 void forward(){                                                         // moving forward  
