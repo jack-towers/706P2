@@ -21,13 +21,13 @@ switch(motor_input)
   case LEFT_TURN:
   ccw();
   // BluetoothSerial.println("Motor Left");
-  delay(20);
+  delay(5);
   break;
  
   case RIGHT_TURN:
   cw();
   // BluetoothSerial.println("Motor Right");
-  delay(20);
+  delay(5);
   break;
  
   case LEFT_ARC:
@@ -35,9 +35,19 @@ switch(motor_input)
   delay(100);
   break;
  
+  case LEFT_ARC_DELAYED:
+  strafe_left();
+  delay(350);
+  break;
+ 
   case RIGHT_ARC:
   strafe_right();
   delay(100);
+  break;
+
+  case RIGHT_ARC_DELAYED:
+  strafe_right();
+  delay(350);
   break;
 
   case BACKWARD_LEFT_TURN:
@@ -66,6 +76,7 @@ switch(motor_input)
   delay(100);
   BluetoothSerial.println("Motor Stop End");
   fanRun();
+  enable_motors();
   reverse(500);
   break;
   }
@@ -96,6 +107,9 @@ void stop(){                                                                // s
   left_rear_motor.writeMicroseconds(1500);
   right_rear_motor.writeMicroseconds(1500);
   right_front_motor.writeMicroseconds(1500);
+
+  delay(100);
+  disable_motors();
 }
 void forward(){                                                         // moving forward  
   left_front_motor.writeMicroseconds(1500 + speed_val);
