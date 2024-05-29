@@ -56,8 +56,8 @@ float sonarRead() {
   //   SerialCom->println("cm");
   // }
 
-  BluetoothSerial.print("Sonar: "); 
-  BluetoothSerial.println(cm);
+  // BluetoothSerial.print("Sonar: "); 
+  // BluetoothSerial.println(cm);
   return cm;
 }
 #endif
