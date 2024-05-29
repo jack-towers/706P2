@@ -167,10 +167,11 @@ void setup() {
   /////////
 
   fan_servo_motor.writeMicroseconds(1500);
-
+  fan_servo_motor.detach();
 }
 
 void loop() {
+
   // put your main code here, to run repeatedly:
   // static STATE machine_state = INITIALISING; // start from the sate
   // INITIALISING;
@@ -308,10 +309,12 @@ void follow() {
   // BluetoothSerial.print(ptMidRightDist);
   // BluetoothSerial.print(" , ");
   // BluetoothSerial.println(ptRightDist);
-  if((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 80){
+  if((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 50){
     turningRange = 25;
-  }else{
-    turningRange = 25;
+  }else if ((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 30){
+    turningRange = 20;
+  } else {
+    turningRange = 10;
   }
   
   if (((ptLeftDist < 175) | (ptMidLeftDist < 175) | (ptMidRightDist < 175) | (ptRightDist < 175)) & (abs((ptMidRightDist - ptMidLeftDist) > turningRange))) {
@@ -422,7 +425,7 @@ void targetAcquired(){
   BluetoothSerial.print(" , ");
   BluetoothSerial.println(ptRightDist);
 
-  if((ptMidLeftDist < 20) && (ptMidRightDist < 45)){
+  if((ptMidLeftDist < 19) && (ptMidRightDist < 25)){
     BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
     target_acquired_command = STOP;
