@@ -21,7 +21,7 @@ void fanRun() {
   BluetoothSerial.print("Fan Off");
 
   if(gotBlown == 2){
-    BluetoothSerial.print("Donezo");
+    BluetoothSerial.println("Donezo");
     delay(1000000000);
  }
 }
