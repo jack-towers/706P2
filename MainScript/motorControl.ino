@@ -32,7 +32,7 @@ switch(motor_input)
  
   case LEFT_ARC:
   strafe_left();
-  delay(40);
+  delay(55);
   break;
  
   case LEFT_ARC_DELAYED:
@@ -42,7 +42,7 @@ switch(motor_input)
  
   case RIGHT_ARC:
   strafe_right();
-  delay(40);
+  delay(55);
   break;
 
   case RIGHT_ARC_DELAYED:
@@ -52,22 +52,22 @@ switch(motor_input)
 
   case BACKWARD_LEFT_TURN:
   reverse_ccw();
-  delay(40);
+  delay(55);
   break;
 
   case BACKWARD_RIGHT_TURN:
   reverse_cw();
-  delay(40);
+  delay(55);
   break;
 
   case DIAG_LEFT:
   diagonal_left();
-  delay(40);
+  delay(55);
   break;
 
   case DIAG_RIGHT:
   diagonal_right();
-  delay(40);
+  delay(55);
   break;
 
   case STOP:
