@@ -15,7 +15,7 @@ switch(motor_input)
   break;
   
   case BACKWARD:
-  reverse(30);
+  reverse(20);
   break;
   
   case LEFT_TURN:
