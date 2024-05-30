@@ -11,7 +11,7 @@ Servo right_front_motor;  // create servo object to control Vex Motor Controller
 const byte fan_servo = 45;
 Servo fan_servo_motor; 
 
-int speed_val = 225;
+int speed_val = 200;
 int speed_change;
 
 //Phototransistor initialisations
@@ -264,9 +264,12 @@ void follow() {
   
   if((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 50){
     turningRange = 20;
+    BluetoothSerial.println("Stage 1");
   }else if ((ptLeftDist+ptMidLeftDist+ptMidRightDist+ptRightDist)/4 > 30){
     turningRange = 15;
+        BluetoothSerial.println("Stage 2");
   } else {
+        BluetoothSerial.println("Stage 3");
     turningRange = 10;
   }
   
@@ -382,27 +385,38 @@ void targetAcquired(){
   //NEEDS TO BE AN AND WHEN CENTERING WORKS
 
   phototransistorRead();
-  // BluetoothSerial.print(ptLeftDist);
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.print(ptMidLeftDist);
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.print(ptMidRightDist);
-  // BluetoothSerial.print(" , ");
-  // BluetoothSerial.println(ptRightDist);
-  // BluetoothSerial.println(sonarRead());
-  if(((ptMidLeftDist + ptMidRightDist)/2) < 18){ 
+  BluetoothSerial.print(ptLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidLeftDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.print(ptMidRightDist);
+  BluetoothSerial.print(" , ");
+  BluetoothSerial.println(ptRightDist);
+  // if(((ptMidLeftDist + ptMidRightDist)/2) < 20){ 
+  //   // BluetoothSerial.println("STOPPED");
+  //   target_acquired_flag = 1;
+  //   BluetoothSerial.println(sonarRead());
+  //   if ((sonarRead() <= 7.5) || (sonarRead() >= 35)) {
+  //     target_acquired_command = STOP;
+  //     gotBlown += 1;
+  //   } else {
+  //     target_acquired_command = FORWARD;
+  //   }
+  //    //fanRun();
+  // } else{
+  //   target_acquired_flag = 0;
+  // }
+
+    if((((ptMidLeftDist + ptMidRightDist)/2) < 18.5) || ((sonarRead() <= 7.5) | (sonarRead() >= 35) & (((ptMidLeftDist + ptMidRightDist)/2) < 20))){ 
     // BluetoothSerial.println("STOPPED");
     target_acquired_flag = 1;
-    if ((sonarRead() <= 7.5) || (sonarRead() >= 35)) {
-      target_acquired_command = STOP;
-      gotBlown += 1;
-    } else {
-      target_acquired_command = FORWARD;
-    }
-     //fanRun();
+    BluetoothSerial.println(sonarRead());
+    target_acquired_command = STOP;
+    gotBlown += 1;
   } else{
     target_acquired_flag = 0;
   }
+
 }
 
 // check flag and select command based on priority 
